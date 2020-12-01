@@ -1,1 +1,22 @@
-<p>{{ title }}</p>
+<mat-drawer-container class="container" autosize>
+  <mat-drawer #drawer class="sidenav"
+    ><p>Menu</p>
+    <button color="primary" mat-button routerLink="/">Home</button>
+    <button color="primary" mat-button routerLink="/login">Login test</button>
+  </mat-drawer>
+  <div class="sidenav-content">
+    <mat-toolbar color="primary">
+      <mat-toolbar-row>
+        <button mat-icon-button (click)="drawer.toggle()">
+          <mat-icon class="">menu</mat-icon>
+        </button>
+        <span>Title</span>
+        <span class="spacer"></span>
+        <button class="login" mat-mini-fab>
+          <mat-icon>person</mat-icon>
+        </button>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </div>
+</mat-drawer-container>

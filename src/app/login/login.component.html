@@ -1,0 +1,4 @@
+<app-register-form (toggleForm)="onToggleForm($event)" *ngIf="!isLogging; else newUser"></app-register-form>
+<ng-template #newUser>
+    <app-login-form (toggleForm)="onToggleForm($event)"></app-login-form>
+</ng-template>
