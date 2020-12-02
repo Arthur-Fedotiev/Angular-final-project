@@ -1,5 +1,8 @@
 export default {
   AUTHENTICATION_KEY: 'superHeroProject:sessionIsActive',
+  USERS: 'USERS',
+  SIGNUP_SUCCESS: "Congradulations! You've successfully signed-up!",
+  SIGNUP_EXISTED: 'You are already signed-up, welcome back!',
   EMAIL_PATTERN:
     '([\\w]+.?){1,3}([\\w]+)?@(?!.{6,})([\\w]+\\.(us|com|co|net|org))',
   PASSWORD_PATTERN:
