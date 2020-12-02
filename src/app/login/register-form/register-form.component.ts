@@ -4,7 +4,8 @@ import { EmailValidator } from 'src/app/shared/validators/emailValidator';
 import { PasswordValidator } from 'src/app/shared/validators/passwordValidator';
 import { UsernameValidator } from 'src/app/shared/validators/usernameValidator';
 import { AuthService } from '../../shared/services/auth.service';
-import { UserInfo } from '../../shared/interfaces/authInterface';
+import { NewUser } from '../../shared/interfaces/authInterface';
+
 @Component({
   selector: 'app-register-form',
   templateUrl: './register-form.component.html',
@@ -55,7 +56,7 @@ export class RegisterFormComponent implements OnInit {
     this.toggleForm.emit(true);
   }
 
-  onSubmit(registerForm: UserInfo) {
-    this.auth.login(registerForm);
+  onSubmit(newUser: NewUser) {
+    this.auth.signup(newUser);
   }
 }

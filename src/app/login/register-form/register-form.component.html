@@ -61,7 +61,7 @@
 
 
       <div class="button">
-        <button type="submit" mat-button>
+        <button type="submit" mat-button [disabled]="!registerForm.valid">
           Signup
         </button>
         <button type="button" mat-button (click)="onClick()">Cancel</button>

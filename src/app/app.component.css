@@ -20,3 +20,7 @@
 .spacer {
   flex: 1 1 auto;
 }
+
+.logout {
+  margin-right: 10px;
+}
