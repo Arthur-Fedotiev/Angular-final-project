@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './shared/guards/auth.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' }, //todo Will be changed due to Guards
+  { path: '/home', redirectTo: '', canActivate: [AuthGuard] },
   {
     path: 'login',
     loadChildren: () =>
       import('./login/login.module').then((module) => module.LoginModule),
   },
-  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({

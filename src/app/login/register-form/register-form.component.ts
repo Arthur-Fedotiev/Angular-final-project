@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmailValidator } from 'src/app/shared/validators/emailValidator';
 import { PasswordValidator } from 'src/app/shared/validators/passwordValidator';
 import { UsernameValidator } from 'src/app/shared/validators/usernameValidator';
-
+import { AuthService } from '../../shared/services/auth.service';
+import { UserInfo } from '../../shared/interfaces/authInterface';
 @Component({
   selector: 'app-register-form',
   templateUrl: './register-form.component.html',
@@ -13,7 +14,7 @@ export class RegisterFormComponent implements OnInit {
   @Output() toggleForm = new EventEmitter<boolean>();
   registerForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private auth: AuthService) {}
 
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group(
@@ -54,7 +55,7 @@ export class RegisterFormComponent implements OnInit {
     this.toggleForm.emit(true);
   }
 
-  onSubmit(registerForm: FormGroup) {
-    console.log(registerForm);
+  onSubmit(registerForm: UserInfo) {
+    this.auth.login(registerForm);
   }
 }

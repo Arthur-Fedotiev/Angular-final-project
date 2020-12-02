@@ -10,17 +10,22 @@ export class UsernameValidator {
       CONSTANTS.KEBAB_CASE_PATTERN,
       CONSTANTS.CAMEL_CASE_PATTERN,
     ];
-    const allowedPattern = allowedCasePatterns.some((pattern) =>
+    console.log(control.value);
+    console.log(CONSTANTS.KEBAB_CASE_PATTERN.test(control.value));
+    let allowedPattern = allowedCasePatterns.some((pattern) =>
       pattern.test(control.value)
     );
 
-    if (!allowedPattern) {
+    console.log('Final output of allowedPattern is: ', allowedPattern);
+
+    if (allowedPattern) {
+      console.log(control.value);
+      return null;
+    } else
       return {
         casePattern: {
           forbiddenNameAlert: CONSTANTS.FORBIDDEN_USERNAME_ALERT,
         },
       };
-    }
-    return null;
   }
 }

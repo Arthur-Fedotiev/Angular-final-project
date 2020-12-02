@@ -1,7 +1,7 @@
 <mat-drawer-container class="container" autosize>
-  <mat-drawer #drawer class="sidenav"
-    ><p>Menu</p>
-    <button color="primary" mat-button routerLink="/">Home</button>
+  <mat-drawer #drawer class="sidenav">
+    <p>Menu</p>
+    <button color="primary" mat-button routerLink="/home">Home</button>
     <button color="primary" mat-button routerLink="/login">Login test</button>
   </mat-drawer>
   <div class="sidenav-content">
@@ -12,7 +12,7 @@
         </button>
         <span>Title</span>
         <span class="spacer"></span>
-        <button class="login" mat-mini-fab>
+        <button class="logout" mat-mini-fab (click)="logout()">
           <mat-icon>person</mat-icon>
         </button>
       </mat-toolbar-row>

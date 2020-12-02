@@ -4,8 +4,7 @@
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm.value)">
       <p>
         <mat-form-field>
-          <input id="userName" type="text" matInput placeholder="Username" formControlName="username"
-            autocomplete="username" />
+          <input id="userName" type="text" matInput placeholder="Username" formControlName="username" />
         </mat-form-field>
       </p>
 
@@ -62,7 +61,7 @@
 
 
       <div class="button">
-        <button type="submit" mat-button [disabled]="!registerForm.valid">
+        <button type="submit" mat-button>
           Signup
         </button>
         <button type="button" mat-button (click)="onClick()">Cancel</button>
