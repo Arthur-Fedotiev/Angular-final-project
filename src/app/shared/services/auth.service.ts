@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { UserInfo } from '../interfaces/authInterface';
+import { UserInfo, AuthResult } from '../interfaces/authInterface';
 import CONSTANTS from '../constants';
 import { NotificationService } from './notification.service';
 
@@ -31,6 +31,21 @@ export class AuthService {
   }
 
   login(userInfo: UserInfo): void {
+    this.getUsersFromStorage();
+    const authResult = this.authenticateUser(userInfo);
+
+    if (authResult.noUser) {
+      return this.notificationService.notify(
+        "Unfortunatelly, there is no user with provided e-mail. Please make sure you've enter correct data or sign-up first."
+      );
+    }
+
+    if (authResult.wrongPassword) {
+      return this.notificationService.notify(
+        'Unfortunatelly, password is wrong. Please try again.'
+      );
+    }
+
     const expirationDate = new Date(Date.now() + 1 * 3600 * 60).getTime();
 
     this.setActiveSession(expirationDate);
@@ -79,14 +94,10 @@ export class AuthService {
   }
 
   private addNewUserToLocalStorage(newUser: UserInfo): void {
-    console.log(newUser);
-
-    const usersFromStorage = JSON.parse(localStorage.getItem(CONSTANTS.USERS));
+    const usersFromStorage = this.getUsersFromStorage();
     const isNewUser = !!usersFromStorage.findIndex(
       (user: UserInfo) => user.email === newUser.email
     );
-
-    console.log(isNewUser);
 
     if (isNewUser) {
       localStorage.setItem(
@@ -105,5 +116,28 @@ export class AuthService {
     localStorage.getItem(CONSTANTS.USERS)
       ? this.addNewUserToLocalStorage(newUser)
       : this.setNewUsersLocalStorage(newUser);
+  }
+
+  private getUsersFromStorage(): UserInfo[] {
+    return JSON.parse(localStorage.getItem(CONSTANTS.USERS));
+  }
+
+  private authenticateUser(userToCheck: UserInfo): AuthResult {
+    let authResult: AuthResult = { noUser: false, wrongPassword: false };
+    const storedUsers = this.getUsersFromStorage();
+    const isRegisteredUser = storedUsers.findIndex(
+      (user) => user.email === userToCheck.email
+    );
+
+    if (!!isRegisteredUser) {
+      authResult.noUser = true;
+    }
+
+    if (!isRegisteredUser) {
+      authResult.wrongPassword =
+        storedUsers[isRegisteredUser].password === userToCheck.password;
+    }
+
+    return authResult;
   }
 }

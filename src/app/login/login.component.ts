@@ -43,6 +43,7 @@ export class LoginComponent implements OnInit {
       Validators.compose([
         Validators.required,
         Validators.pattern(EmailValidator.pattern),
+        PasswordValidator.cannotContainSpaces,
       ])
     );
   }

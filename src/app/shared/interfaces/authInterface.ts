@@ -9,3 +9,7 @@ export interface UserInfo {
 export interface FormControls {
   [key: string]: AbstractControl;
 }
+
+export interface AuthResult {
+  [key: string]: boolean;
+}

@@ -27,6 +27,9 @@
             <p *ngIf="renderError('email','required')" class="error">
                 Email is required.
             </p>
+            <p *ngIf="renderError('email','cannotContainSpace')" class="error">
+                Email should not contain whitespaces.
+            </p>
             <p *ngIf="renderError('email','pattern')" class="error">
                 Supports only (.com, .net, .org, .co, .us) domains, only 5
                 symbols after @ allowed, and no more than 3 dots before @.

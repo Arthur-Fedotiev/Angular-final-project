@@ -26,8 +26,10 @@ export class PasswordValidator {
   ): ValidationErrors | null => {
     const email: string = formGroup.get('email').value.toLowerCase();
     const password: string = formGroup.get('password').value.toLowerCase();
-    const emailParts = email.substring(0, email.indexOf('@')).split('.');
-    const passwordIsUnique =
+    const emailParts: string[] = email
+      .substring(0, email.indexOf('@'))
+      .split(/[.]/);
+    const passwordIsUnique: boolean =
       emailParts.filter((part) => part && password.includes(part)).length === 0;
 
     return password && email && !passwordIsUnique

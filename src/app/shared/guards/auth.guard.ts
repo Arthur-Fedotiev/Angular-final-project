@@ -25,7 +25,7 @@ export class AuthGuard implements CanActivate {
     | boolean
     | UrlTree {
     return this.authService.isActiveSession$.pipe(
-      tap((isActiveSession) => {
+      tap((isActiveSession: boolean) => {
         if (isActiveSession) {
           return true;
         } else {
