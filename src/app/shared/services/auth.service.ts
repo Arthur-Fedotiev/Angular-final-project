@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { UserInfo, NewUser } from '../interfaces/authInterface';
+import { UserInfo } from '../interfaces/authInterface';
 import CONSTANTS from '../constants';
 import { NotificationService } from './notification.service';
 
@@ -19,7 +19,9 @@ export class AuthService {
     private notificationService: NotificationService
   ) {}
 
-  signup(newUser: NewUser): void {
+  signup(newUser: UserInfo): void {
+    console.log(newUser);
+
     const expirationDate = new Date(Date.now() + 1 * 3600 * 60).getTime();
 
     this.saveNewUser(newUser);
@@ -70,17 +72,21 @@ export class AuthService {
     );
   }
 
-  private setNewUsersLocalStorage(newUser: NewUser): void {
+  private setNewUsersLocalStorage(newUser: UserInfo): void {
     const newUsers = [newUser];
     localStorage.setItem(CONSTANTS.USERS, JSON.stringify(newUsers));
     this.notificationService.notify(CONSTANTS.SIGNUP_SUCCESS);
   }
 
-  private addNewUserToLocalStorage(newUser: NewUser): void {
+  private addNewUserToLocalStorage(newUser: UserInfo): void {
+    console.log(newUser);
+
     const usersFromStorage = JSON.parse(localStorage.getItem(CONSTANTS.USERS));
     const isNewUser = !!usersFromStorage.findIndex(
-      (user: NewUser) => user.email === newUser.email
+      (user: UserInfo) => user.email === newUser.email
     );
+
+    console.log(isNewUser);
 
     if (isNewUser) {
       localStorage.setItem(
@@ -95,7 +101,7 @@ export class AuthService {
     }
   }
 
-  private saveNewUser(newUser: NewUser): void {
+  private saveNewUser(newUser: UserInfo): void {
     localStorage.getItem(CONSTANTS.USERS)
       ? this.addNewUserToLocalStorage(newUser)
       : this.setNewUsersLocalStorage(newUser);
