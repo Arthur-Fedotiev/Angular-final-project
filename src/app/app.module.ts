@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AuthService } from './shared/services/auth.service';
 import { HeroesComponent } from './heroes/heroes.component';
 import { NotificationService } from './shared/services/notification.service';
+import { UsersService } from './shared/services/users.service';
 
 @NgModule({
   declarations: [AppComponent, HeroesComponent],
@@ -18,7 +19,7 @@ import { NotificationService } from './shared/services/notification.service';
     BrowserAnimationsModule,
     AppRoutingModule,
   ],
-  providers: [AuthService, NotificationService],
+  providers: [AuthService, NotificationService, UsersService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

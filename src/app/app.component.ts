@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from './shared/services/auth.service';
 import { shareReplay } from 'rxjs/operators';
+import { UsersService } from './shared/services/users.service';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,14 @@ export class AppComponent {
 
   isActiveSession$ = this.authService.isActiveSession$.pipe(shareReplay(1));
 
-  constructor(private authService: AuthService) {}
+  ngOnInit() {
+    !UsersService.isLocalStorageexists() &&
+      this.usersService.setEmptyLocalStoage();
+  }
+  constructor(
+    private authService: AuthService,
+    private usersService: UsersService
+  ) {}
 
   logout() {
     this.authService.logout();

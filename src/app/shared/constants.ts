@@ -3,6 +3,11 @@ export default {
   USERS: 'USERS',
   SIGNUP_SUCCESS: "Congradulations! You've successfully signed-up!",
   SIGNUP_EXISTED: 'You are already signed-up, welcome back!',
+  SESSION_EXPIRED: 'Your session is out of date, please login back again!',
+  LOGIN_SUCCESS: "Welcome back, lets's play a game!",
+  LOGIN_WRONG_PASSWORD: 'Unfortunatelly, password is wrong. Please try again.',
+  LOGIN_NO_USER:
+    "Unfortunatelly, there is no user with provided e-mail. Please make sure you've enter correct data or sign-up first.",
   EMAIL_PATTERN:
     '([\\w]+.?){1,3}([\\w]+)?@(?!.{6,})([\\w]+\\.(us|com|co|net|org))',
   PASSWORD_PATTERN:
