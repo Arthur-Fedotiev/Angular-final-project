@@ -21,7 +21,8 @@
 
             <p>
                 <mat-form-field>
-                    <input type="email" matInput placeholder="Email" formControlName="email" autocomplete="username" />
+                    <input type="email" matInput placeholder="Email" formControlName="email" autocomplete="username"
+                        required />
                 </mat-form-field>
             </p>
             <p *ngIf="renderError('email','required')" class="error">

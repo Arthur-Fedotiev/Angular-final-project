@@ -12,7 +12,7 @@ import { NotificationService } from './shared/services/notification.service';
 import { UsersService } from './shared/services/users.service';
 
 @NgModule({
-  declarations: [AppComponent, HeroesComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     MaterialModule,

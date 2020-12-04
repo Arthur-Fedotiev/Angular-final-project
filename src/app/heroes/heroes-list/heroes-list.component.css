@@ -1,0 +1,17 @@
+.mat-card {
+  max-width: 100%;
+  margin: auto;
+}
+
+.mat-card-avatar {
+  background-image: url("https://www.superherodb.com/pictures2/portraits/10/100/679.jpg");
+  background-size: cover;
+}
+
+.mat-card-actions {
+  display: flex;
+}
+
+.mat-card-actions .flex-spacer {
+  width: 100%;
+}

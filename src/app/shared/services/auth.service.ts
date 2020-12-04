@@ -44,7 +44,7 @@ export class AuthService {
     }
 
     const expirationDate: number = new Date(
-      Date.now() + 1 * 3600 * 60
+      Date.now() + 1 * 3600 * 600
     ).getTime();
 
     this.setActiveSession(expirationDate);

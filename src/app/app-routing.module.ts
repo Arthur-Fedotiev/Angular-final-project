@@ -4,7 +4,12 @@ import { HeroesComponent } from './heroes/heroes.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 
 const routes: Routes = [
-  { path: 'heroes', component: HeroesComponent, canActivate: [AuthGuard] },
+  {
+    path: 'heroes',
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('./heroes/heroes.module').then((module) => module.HeroesModule),
+  },
   {
     path: 'login',
     loadChildren: () =>
