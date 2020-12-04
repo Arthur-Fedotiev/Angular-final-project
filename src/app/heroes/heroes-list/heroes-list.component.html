@@ -1,15 +1,66 @@
 <mat-list>
-    <mat-card>
+    <mat-card *ngFor="let hero of heroes">
+
         <mat-card-header>
-            <div mat-card-avatar></div>
-            <mat-card-title>Arthur</mat-card-title>
-            <mat-card-subtitle>the Brawler</mat-card-subtitle>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>{{hero.name}}</mat-card-title>
+            <mat-card-subtitle>Dog Breed</mat-card-subtitle>
         </mat-card-header>
-        <!-- <img matCardImage src="/assets/img/drova-2.jpg" /> -->
-        <mat-card-content> You can call demigod Arthur </mat-card-content>
+
+        <mat-card-content>
+            <img mat-card-lg-image src="{{hero.url}}" />
+
+            <div class="powerstats">
+                <h2 matLine> {{ 'Powerstats' | titlecase }} </h2>
+
+                <div class="powerstats-wrapper">
+                    <div class="stat">
+                        <h3 matLine>
+                            Intelligence
+                        </h3>
+                        <p matLine>{{hero.powerstats.intelligence}}</p>
+                    </div>
+
+                    <div class="stat">
+                        <h3 matLine>
+                            strength
+                        </h3>
+                        <p matLine>{{hero.powerstats.strength}}</p>
+                    </div>
+
+                    <div class="stat">
+                        <h3 matLine>
+                            speed
+                        </h3>
+                        <p matLine>{{hero.powerstats.speed}}</p>
+                    </div>
+
+                    <div class="stat">
+                        <h3 matLine>
+                            durability
+                        </h3>
+                        <p matLine>{{hero.powerstats.durability}}</p>
+                    </div>
+
+                    <div class="stat">
+                        <h3 matLine>
+                            power
+                        </h3>
+                        <p matLine>{{hero.powerstats.power}}</p>
+                    </div>
+                    <div class="stat">
+                        <h3 matLine>
+                            combat
+                        </h3>
+                        <p matLine>{{hero.powerstats.combat}}</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </mat-card-content>
         <mat-card-actions align="start">
-            <button mat-button color="primary">LIKE</button>
-            <button mat-button color="primary">DELETE</button>
             <div class="flex-spacer"></div>
             <button mat-icon-button>
                 <mat-icon>favorite_border</mat-icon>

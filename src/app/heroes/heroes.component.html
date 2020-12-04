@@ -1,6 +1,6 @@
 <div class="heroes-page-container">
+    <app-heroes-search (searchHero)="searchHero($event)"></app-heroes-search>
 
-    <app-heroes-search></app-heroes-search>
-
-    <app-heroes-list></app-heroes-list>
+    <app-heroes-list [heroes]="heroes"></app-heroes-list>
+    <pre>{{lastSearch | json}}</pre>
 </div>

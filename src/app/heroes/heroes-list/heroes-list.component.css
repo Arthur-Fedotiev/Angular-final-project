@@ -15,3 +15,17 @@
 .mat-card-actions .flex-spacer {
   width: 100%;
 }
+
+.mat-card-content {
+  display: flex;
+}
+.powerstats {
+  flex-grow: 1;
+}
+.powerstats-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+.mat-line {
+  text-align: center;
+}

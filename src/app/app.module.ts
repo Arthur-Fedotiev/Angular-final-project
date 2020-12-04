@@ -7,9 +7,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //----------Routing
 import { AppRoutingModule } from './app-routing.module';
 import { AuthService } from './shared/services/auth.service';
-import { HeroesComponent } from './heroes/heroes.component';
 import { NotificationService } from './shared/services/notification.service';
 import { UsersService } from './shared/services/users.service';
+import { HeroesService } from './shared/services/heroes.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,8 +19,9 @@ import { UsersService } from './shared/services/users.service';
     MaterialModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    HttpClientModule,
   ],
-  providers: [AuthService, NotificationService, UsersService],
+  providers: [AuthService, NotificationService, UsersService, HeroesService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
