@@ -64,6 +64,7 @@ export class HeroesComponent implements OnInit {
   setHeroes(heroes: HeroInterface[]): HeroInterface[] {
     return heroes.map((hero) => {
       const selectedHeroes = [...this.heroesService.getSelectedHeroes()];
+
       return selectedHeroes.findIndex(
         (selectedHero: HeroInterface) => selectedHero.id === hero.id
       ) >= 0
@@ -74,6 +75,7 @@ export class HeroesComponent implements OnInit {
 
   heroSelect(id: string): void {
     const indexOfSelected = this.heroes.findIndex((hero) => hero.id === id);
+
     this.heroes[indexOfSelected].selected = true;
   }
 

@@ -11,7 +11,6 @@ import { HeroesService } from './shared/services/heroes.service';
 })
 export class AppComponent {
   title = 'angular-superhero-project';
-
   isActiveSession$ = this.authService.isActiveSession$.pipe(shareReplay(1));
 
   ngOnInit() {
@@ -24,7 +23,7 @@ export class AppComponent {
     private heroesService: HeroesService
   ) {}
 
-  logout() {
+  logout(): void {
     this.authService.logout();
     this.heroesService.emptyHeroesStorage();
   }

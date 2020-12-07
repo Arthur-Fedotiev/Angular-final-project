@@ -31,11 +31,9 @@
 }
 
 .favorite {
-  /* width: 24px;
-  height: 24px;
-  fill: #bdc2c5; */
   cursor: pointer;
 }
+
 .favorite.is-favorite {
   fill: red;
   color: red;
