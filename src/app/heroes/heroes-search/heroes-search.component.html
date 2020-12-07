@@ -1,7 +1,10 @@
 <form [formGroup]="searchForm" class="search-form" (ngSubmit)="onSubmit(searchForm.value); heroNameSearch.value =''">
     <mat-form-field class="search-full-width">
         <mat-label>Find hero</mat-label>
-        <input #heroNameSearch matInput placeholder="Find Hero" formControlName="heroName">
+        <input #heroNameSearch matInput placeholder="Find Hero" formControlName="heroName" [value]="letter">
+        <button mat-icon-button color="accent" matSuffix>
+            <mat-icon>search</mat-icon>
+        </button>
         <mat-error align="end" *ngIf="searchForm.get('heroName').hasError('pattern')">
             A valid hero name is required
         </mat-error>
@@ -18,7 +21,7 @@
         <mat-list>
             <mat-list-item>
                 <h3 matLine> Last Search </h3>
-                <button mat-icon-button color="warn">
+                <button mat-icon-button color="accent">
                     <mat-icon>search</mat-icon>
                 </button>
             </mat-list-item>

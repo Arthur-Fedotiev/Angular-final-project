@@ -8,6 +8,7 @@ import { HeroesComponent } from './heroes.component';
 import { HeroesListComponent } from './heroes-list/heroes-list.component';
 import { HeroesSearchComponent } from './heroes-search/heroes-search.component';
 import { SelectedPipe } from '../shared/pipes/selected.pipe';
+import { alphabet, alphabetToken } from '../shared/providers';
 
 @NgModule({
   declarations: [
@@ -23,5 +24,6 @@ import { SelectedPipe } from '../shared/pipes/selected.pipe';
     ReactiveFormsModule,
     MaterialModule,
   ],
+  providers: [{ provide: alphabetToken, useValue: alphabet }],
 })
 export class HeroesModule {}

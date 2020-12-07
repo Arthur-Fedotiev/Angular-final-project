@@ -9,8 +9,12 @@ import { HeroesService } from 'src/app/shared/services/heroes.service';
   styleUrls: ['./heroes-search.component.css'],
 })
 export class HeroesSearchComponent implements OnInit {
+  @Input() set searchLetter(val) {
+    this.letter = val;
+  }
   @Output() searchHero = new EventEmitter<string>();
 
+  letter: string = '';
   searchForm: FormGroup;
   recentSearches: string[];
 
@@ -30,7 +34,7 @@ export class HeroesSearchComponent implements OnInit {
     });
   }
 
-  onSubmit(heroSearch: HeroSearch) {
+  onSubmit(heroSearch: HeroSearch): void {
     this.searchHero.emit(heroSearch.heroName);
   }
 }

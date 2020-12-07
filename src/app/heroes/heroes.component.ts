@@ -1,10 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Component, Inject, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import {
-  HeroAPIResponse,
-  HeroInterface,
-} from '../shared/interfaces/heroInterface';
+import { HeroInterface } from '../shared/interfaces/heroInterface';
+import { alphabetToken } from '../shared/providers';
 import { HeroesService } from '../shared/services/heroes.service';
 import { NotificationService } from '../shared/services/notification.service';
 
@@ -17,35 +15,49 @@ export class HeroesComponent implements OnInit {
   private readonly heroesSubscriptionDestroyed$: Subject<boolean> = new Subject<boolean>();
 
   heroes: HeroInterface[] = [];
-  selectedHeroes;
-  lastSearch: string;
+  selectedHeroes: HeroInterface[];
+  searchLetter: string = 'A';
+  showSortPanel: boolean = false;
   eror: boolean = true;
   loading: boolean = false;
 
   constructor(
     private heroesService: HeroesService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    @Inject(alphabetToken) public alphabet
   ) {}
 
   ngOnInit(): void {
     this.selectedHeroes = this.heroesService.getSelectedHeroes();
   }
 
+  toggleSortPanel(): void {
+    this.showSortPanel = !this.showSortPanel;
+  }
+
+  changesearchLetter(letter: string): void {
+    this.searchLetter = letter;
+    this.toggleSortPanel();
+    this.searchHero(letter);
+  }
+
   searchHero(heroName: string): void {
+    this.loading = true;
     this.heroesService
       .searchHeroes(heroName)
       .pipe(takeUntil(this.heroesSubscriptionDestroyed$))
       .subscribe(
         (heroes) => {
-          this.lastSearch = heroName;
           this.heroes = this.setHeroes(heroes);
           this.heroesService.addNewQuery(heroName);
           this.eror = false;
         },
         (error) => {
           this.eror = true;
+          this.loading = false;
           this.notificationService.notify(error);
-        }
+        },
+        () => (this.loading = false)
       );
   }
 

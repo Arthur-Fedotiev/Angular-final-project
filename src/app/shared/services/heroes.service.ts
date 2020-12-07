@@ -1,13 +1,8 @@
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpParams,
-} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { HeroAPIResponse, HeroInterface } from '../interfaces/heroInterface';
+import { HeroInterface } from '../interfaces/heroInterface';
 import { catchError, map, retry } from 'rxjs/operators';
-import { NotificationService } from './notification.service';
 import CONSTANTS from '../constants';
 import { LocalStorageService } from './local-storage.service';
 
@@ -28,7 +23,6 @@ export class HeroesService {
 
   constructor(
     private http: HttpClient,
-    private notificationService: NotificationService,
     private localStorageService: LocalStorageService
   ) {}
 
@@ -41,32 +35,28 @@ export class HeroesService {
     return this.succesfullQueries;
   }
   getSelectedHeroes(): HeroInterface[] {
-    console.log(this.selectedHeroes);
     return this.selectedHeroes;
   }
 
   addNewQuery(query: string): void {
-    console.log(this.succesfullQueries);
-
     !this.succesfullQueries.includes(query) &&
       this.succesfullQueries.push(query);
     this.localStorageService.setItem(CONSTANTS.QUERIES, this.succesfullQueries);
   }
 
   addToSelected(selectedHero: HeroInterface): void {
-    const isAlredyFavorite = this.selectedHeroes.findIndex(
+    const isAlreadySelected = this.selectedHeroes.findIndex(
       (heroe) => heroe.id === selectedHero.id
     );
 
-    isAlredyFavorite >= 0
-      ? this.selectedHeroes.splice(isAlredyFavorite, 1)
+    isAlreadySelected >= 0
+      ? this.selectedHeroes.splice(isAlreadySelected, 1)
       : this.selectedHeroes.push(selectedHero);
 
     this.localStorageService.setItem(
       CONSTANTS.SELECTED_HEROES,
       this.selectedHeroes
     );
-    console.log(this.selectedHeroes);
   }
 
   private transformResponse(response: any): HeroInterface {
@@ -82,7 +72,7 @@ export class HeroesService {
   searchHeroes(query: string): Observable<HeroInterface[]> {
     const url = this.baseHeroesUrl + query.trim();
 
-    return this.http.get<any>(url).pipe(
+    return this.http.get<Record<string, []>>(url).pipe(
       retry(1),
       map(({ results }) => results.map(this.transformResponse)),
       catchError(this.handleError)

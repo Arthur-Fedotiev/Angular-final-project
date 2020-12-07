@@ -11,6 +11,7 @@ import { HeroesService } from 'src/app/shared/services/heroes.service';
 export class HeroesListComponent implements OnInit {
   @Input() heroes: HeroInterface[];
   @Output() heroSelect = new EventEmitter();
+
   selectedHeroes: HeroInterface[];
 
   constructor(private heroesService: HeroesService) {}

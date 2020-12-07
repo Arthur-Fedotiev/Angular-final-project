@@ -11,6 +11,7 @@ import { NotificationService } from './shared/services/notification.service';
 import { UsersService } from './shared/services/users.service';
 import { HeroesService } from './shared/services/heroes.service';
 import { HttpClientModule } from '@angular/common/http';
+import { alphabet, alphabetToken } from './shared/providers';
 
 @NgModule({
   declarations: [AppComponent],
