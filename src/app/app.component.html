@@ -13,9 +13,11 @@
         <span>Title</span>
         <span class="spacer"></span>
         <div *ngIf="isActiveSession$ | async">
-          <span class="logout">Logout</span>
-          <button class="logout" mat-mini-fab (click)="logout()">
+          <button mat-mini-fab routerLink="/user">
             <mat-icon>person</mat-icon>
+          </button>
+          <button class="logout" color="warn" mat-button (click)="logout()">
+            Logout
           </button>
         </div>
       </mat-toolbar-row>
