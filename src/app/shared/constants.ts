@@ -1,6 +1,8 @@
 export default {
   AUTHENTICATION_KEY: 'superHeroProject:sessionIsActive',
   USERS: 'USERS',
+  QUERIES: 'QUERIES',
+  SELECTED_HEROES: 'SELECTED_HEROES',
   SIGNUP_SUCCESS: "Congradulations! You've successfully signed-up!",
   SIGNUP_EXISTED: 'You are already signed-up, welcome back!',
   SESSION_EXPIRED: 'Your session is out of date, please login back again!',

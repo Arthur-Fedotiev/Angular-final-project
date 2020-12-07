@@ -40,6 +40,8 @@
                 <mat-form-field>
                     <input type="password" matInput placeholder="Password" formControlName="password"
                         autocomplete="new-password" />
+                    <mat-hint align="end">Password should not contain parts of your e-mail. It must include at least one
+                        uppercase and lowercase letter, special symbol, and be longer than 5 charachters </mat-hint>
                 </mat-form-field>
             </p>
             <div *ngIf="(loginForm.touched || loginForm.dirty) && loginForm.errors"

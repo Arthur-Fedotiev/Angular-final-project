@@ -7,9 +7,15 @@ import { MaterialModule } from '../material.module';
 import { HeroesComponent } from './heroes.component';
 import { HeroesListComponent } from './heroes-list/heroes-list.component';
 import { HeroesSearchComponent } from './heroes-search/heroes-search.component';
+import { SelectedPipe } from '../shared/pipes/selected.pipe';
 
 @NgModule({
-  declarations: [HeroesComponent, HeroesListComponent, HeroesSearchComponent],
+  declarations: [
+    HeroesComponent,
+    HeroesListComponent,
+    HeroesSearchComponent,
+    SelectedPipe,
+  ],
   imports: [
     CommonModule,
     HeroesRoutingModule,

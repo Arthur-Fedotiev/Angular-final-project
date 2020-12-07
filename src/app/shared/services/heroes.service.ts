@@ -8,18 +8,66 @@ import { Observable, throwError } from 'rxjs';
 import { HeroAPIResponse, HeroInterface } from '../interfaces/heroInterface';
 import { catchError, map, retry } from 'rxjs/operators';
 import { NotificationService } from './notification.service';
+import CONSTANTS from '../constants';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HeroesService {
+  succesfullQueries: string[] = this.localStorageService.getItem(
+    CONSTANTS.QUERIES
+  );
+  selectedHeroes: HeroInterface[] = this.localStorageService.getItem(
+    CONSTANTS.SELECTED_HEROES
+  );
+  lastSelectedHero: HeroInterface;
+
   private baseHeroesUrl: string =
     'https://www.superheroapi.com/api.php/1276931142665573/search/';
 
   constructor(
     private http: HttpClient,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private localStorageService: LocalStorageService
   ) {}
+
+  emptyHeroesStorage(): void {
+    this.succesfullQueries = [];
+    this.selectedHeroes = [];
+  }
+
+  getSuccessfullQueries(): string[] | [] {
+    return this.succesfullQueries;
+  }
+  getSelectedHeroes(): HeroInterface[] {
+    console.log(this.selectedHeroes);
+    return this.selectedHeroes;
+  }
+
+  addNewQuery(query: string): void {
+    console.log(this.succesfullQueries);
+
+    !this.succesfullQueries.includes(query) &&
+      this.succesfullQueries.push(query);
+    this.localStorageService.setItem(CONSTANTS.QUERIES, this.succesfullQueries);
+  }
+
+  addToSelected(selectedHero: HeroInterface): void {
+    const isAlredyFavorite = this.selectedHeroes.findIndex(
+      (heroe) => heroe.id === selectedHero.id
+    );
+
+    isAlredyFavorite >= 0
+      ? this.selectedHeroes.splice(isAlredyFavorite, 1)
+      : this.selectedHeroes.push(selectedHero);
+
+    this.localStorageService.setItem(
+      CONSTANTS.SELECTED_HEROES,
+      this.selectedHeroes
+    );
+    console.log(this.selectedHeroes);
+  }
 
   private transformResponse(response: any): HeroInterface {
     return {
@@ -27,21 +75,26 @@ export class HeroesService {
       name: response.name,
       powerstats: response.powerstats,
       url: response.image.url,
+      selected: false,
     };
   }
 
-  searchHeroes(query: string): Observable<HeroAPIResponse> {
+  searchHeroes(query: string): Observable<HeroInterface[]> {
     const url = this.baseHeroesUrl + query.trim();
 
     return this.http.get<any>(url).pipe(
-      retry(3),
+      retry(1),
       map(({ results }) => results.map(this.transformResponse)),
       catchError(this.handleError)
     );
   }
 
-  private handleError(error: HttpErrorResponse) {
+  private handleError(error: HttpErrorResponse): Observable<never> {
     console.error(error.message);
     return throwError('A data error occurred, please try again.');
+  }
+
+  getQueriesFromStorage(): string[] | any[] {
+    return this.localStorageService.getItem(CONSTANTS.QUERIES) || [];
   }
 }

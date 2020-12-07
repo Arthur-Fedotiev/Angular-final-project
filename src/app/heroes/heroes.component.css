@@ -1,5 +1,15 @@
 .heroes-page-container {
+  position: relative;
   padding-top: 2rem;
   width: 80%;
   margin: auto;
+}
+.letter-wrapper {
+  position: absolute;
+  left: -5%;
+}
+.hidden-list {
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
 }

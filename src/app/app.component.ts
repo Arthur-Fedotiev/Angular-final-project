@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from './shared/services/auth.service';
 import { shareReplay } from 'rxjs/operators';
 import { UsersService } from './shared/services/users.service';
+import { HeroesService } from './shared/services/heroes.service';
 
 @Component({
   selector: 'app-root',
@@ -19,10 +20,12 @@ export class AppComponent {
   }
   constructor(
     private authService: AuthService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private heroesService: HeroesService
   ) {}
 
   logout() {
     this.authService.logout();
+    this.heroesService.emptyHeroesStorage();
   }
 }

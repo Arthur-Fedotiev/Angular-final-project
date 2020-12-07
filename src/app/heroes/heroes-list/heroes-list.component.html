@@ -4,7 +4,7 @@
         <mat-card-header>
             <div mat-card-avatar class="example-header-image"></div>
             <mat-card-title>{{hero.name}}</mat-card-title>
-            <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+            <mat-card-subtitle>{{hero.selected}}</mat-card-subtitle>
         </mat-card-header>
 
         <mat-card-content>
@@ -62,9 +62,7 @@
         </mat-card-content>
         <mat-card-actions align="start">
             <div class="flex-spacer"></div>
-            <button mat-icon-button>
-                <mat-icon>favorite_border</mat-icon>
-            </button>
+            <button mat-button [disabled]="hero.selected" (click)="selectHero(hero); ">SELECT</button>
         </mat-card-actions>
         <mat-card-footer> </mat-card-footer>
     </mat-card>

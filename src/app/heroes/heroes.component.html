@@ -1,6 +1,42 @@
 <div class="heroes-page-container">
-    <app-heroes-search (searchHero)="searchHero($event)"></app-heroes-search>
+    <div class="letter-wrapper">
+        <mat-list class="hidden-list">
+            <mat-list-item>
+                <p matLine> A </p>
+            </mat-list-item>
+        </mat-list>
+        <mat-list class="hidden-list">
+            <mat-list-item>
+                <p matLine> A </p>
+            </mat-list-item>
+            <mat-list-item>
+                <p matLine> A </p>
+            </mat-list-item>
+            <mat-list-item>
+                <p matLine> A </p>
+            </mat-list-item>
+            <!-- <button mat-icon-button color="warn">
+            <mat-icon>search</mat-icon>
+        </button> -->
 
-    <app-heroes-list [heroes]="heroes"></app-heroes-list>
+            <!-- <mat-list-item *ngFor="let search of recentSearches">{{search}}</mat-list-item> -->
+        </mat-list>
+    </div>
+
+    <!-- <div class="letter-wrapper">
+        <div>A</div>
+        <ul class="hidden-list">
+            <li>B</li>
+            <li>C</li>
+            <li>D</li>
+            <li>E</li>
+            <li>F</li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div> -->
+    <app-heroes-search (searchHero)="searchHero($event)"></app-heroes-search>
+    <app-heroes-list (heroSelect)="heroSelect($event)" *ngIf="heroes.length" [heroes]="heroes"></app-heroes-list>
     <pre>{{lastSearch | json}}</pre>
 </div>

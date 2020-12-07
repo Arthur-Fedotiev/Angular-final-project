@@ -3,6 +3,7 @@ export interface HeroInterface {
   name: string;
   powerstats: Stats;
   url: string;
+  selected: boolean;
 }
 
 export interface Stats {
@@ -16,4 +17,8 @@ export interface Stats {
 
 export interface HeroAPIResponse {
   heroes: HeroInterface[];
+}
+
+export interface HeroSearch {
+  heroName: string;
 }
