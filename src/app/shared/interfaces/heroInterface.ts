@@ -22,3 +22,11 @@ export interface HeroAPIResponse {
 export interface HeroSearch {
   heroName: string;
 }
+
+export interface APIResults {
+  id: string;
+  name: string;
+  powerstats: Stats;
+  image: { [key: string]: string };
+  selected: boolean;
+}

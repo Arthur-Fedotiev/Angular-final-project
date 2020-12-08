@@ -16,7 +16,6 @@ export class HeroesListComponent implements OnInit {
   ngOnInit(): void {
     this.heroes = this.heroService.getSelectedHeroes();
     this.lastSelectedHero = this.heroService.getLastSelectedHero();
-    console.log(this.heroService.getLastSelectedHero());
   }
 
   removeFromSelected(id: string): void {

@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { HeroInterface } from '../interfaces/heroInterface';
+import { APIResults, HeroInterface } from '../interfaces/heroInterface';
 import { catchError, map, retry } from 'rxjs/operators';
 import CONSTANTS from '../constants';
 import { LocalStorageService } from './local-storage.service';
@@ -51,7 +51,6 @@ export class HeroesService {
   addToSelected(selectedHero: HeroInterface): void {
     this.selectedHeroes.push(selectedHero);
     this.lastSelectedHero = { ...selectedHero };
-
     this.localStorageService.setItem(
       CONSTANTS.SELECTED_HEROES,
       this.selectedHeroes
@@ -69,11 +68,10 @@ export class HeroesService {
 
     if (this.lastSelectedHeroDeleted(id)) {
       this.lastSelectedHero = this.getLastHeroOrNull(this.selectedHeroes);
-      console.log(this.lastSelectedHero);
     }
   }
 
-  private transformResponse(response: any): HeroInterface {
+  private transformResponse(response: APIResults): HeroInterface {
     return {
       id: response.id,
       name: response.name,

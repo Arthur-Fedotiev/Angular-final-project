@@ -105,6 +105,7 @@ export class AuthService {
 
   private authenticateUser(userToCheck: UserInfo): AuthResult {
     let authResult: AuthResult = { noUser: false, wrongPassword: false };
+
     const storedUsers = this.usersService.getUsersFromStorage();
     const isRegisteredUser = storedUsers.findIndex(
       (user) => user.email === userToCheck.email
