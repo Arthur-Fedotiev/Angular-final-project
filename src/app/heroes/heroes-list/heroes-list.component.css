@@ -4,8 +4,7 @@
 }
 
 .mat-card-avatar {
-  background-image: url("https://www.superherodb.com/pictures2/portraits/10/100/679.jpg");
-  background-size: cover;
+  background-color: lightgray;
 }
 
 .mat-card-actions {

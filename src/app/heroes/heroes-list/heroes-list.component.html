@@ -2,7 +2,11 @@
     <mat-card *ngFor="let hero of heroes">
 
         <mat-card-header>
-            <div mat-card-avatar class="example-header-image"></div>
+            <div mat-card-avatar *ngIf="lastSelectedHero && lastSelectedHero.id === hero.id"><button mat-mini-fab
+                    color="accent">
+                    <mat-icon>stars</mat-icon>
+                </button>
+            </div>
             <mat-card-title>{{hero.name}}</mat-card-title>
             <mat-card-subtitle>{{hero.selected}}</mat-card-subtitle>
         </mat-card-header>

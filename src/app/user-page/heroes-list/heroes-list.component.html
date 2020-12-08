@@ -3,13 +3,11 @@
     <mat-card *ngFor="let hero of heroes">
 
         <mat-card-header>
-
-            <!-- <div *ngIf="lastSelectedHero && lastSelectedHero.id === hero.id" mat-card-avatar
-                class="example-header-image">
-                <button mat-fab color="primary" routerLink="/heroes">
-                    <mat-icon>add</mat-icon>
+            <div mat-card-avatar><button *ngIf="lastSelectedHero && lastSelectedHero.id === hero.id" mat-mini-fab
+                    color="accent">
+                    <mat-icon>stars</mat-icon>
                 </button>
-            </div> -->
+            </div>
             <mat-card-title>{{hero.name}}</mat-card-title>
             <mat-card-subtitle>{{lastSelectedHero && lastSelectedHero.name || 'not last one'}}</mat-card-subtitle>
         </mat-card-header>
