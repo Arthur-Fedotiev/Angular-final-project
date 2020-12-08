@@ -1,4 +1,5 @@
 export default {
+  API_TOKEN: '1276931142665573',
   AUTHENTICATION_KEY: 'superHeroProject:sessionIsActive',
   USERS: 'USERS',
   QUERIES: 'QUERIES',

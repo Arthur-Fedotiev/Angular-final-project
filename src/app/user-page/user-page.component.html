@@ -1,7 +1,12 @@
 <mat-tab-group>
     <mat-tab label="Heroes List">
         <ng-template matTabContent>
-            <p>Heroes List</p>
+            <div class="heroes-list-wrapper">
+                <app-heroes-list></app-heroes-list>
+                <button class="back-to-hero-select" mat-fab color="primary" routerLink="/heroes">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
         </ng-template>
     </mat-tab>
     <mat-tab label="Battle Records">

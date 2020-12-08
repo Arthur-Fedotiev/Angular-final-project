@@ -13,11 +13,13 @@ export class HeroesListComponent implements OnInit {
   @Output() heroSelect = new EventEmitter();
 
   selectedHeroes: HeroInterface[];
+  lastSelectedHero: HeroInterface | null;
 
   constructor(private heroesService: HeroesService) {}
 
   ngOnInit(): void {
     this.selectedHeroes = this.heroesService.getSelectedHeroes();
+    this.lastSelectedHero = this.heroesService.getLastSelectedHero();
   }
 
   selectHero(hero: HeroInterface): void {

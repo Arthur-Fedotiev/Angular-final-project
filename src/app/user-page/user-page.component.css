@@ -1,0 +1,9 @@
+.heroes-list-wrapper {
+  position: relative;
+}
+
+.back-to-hero-select {
+  position: absolute;
+  bottom: 0;
+  right: 5px;
+}

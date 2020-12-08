@@ -16,10 +16,9 @@ export class HeroesService {
   selectedHeroes: HeroInterface[] = this.localStorageService.getItem(
     CONSTANTS.SELECTED_HEROES
   );
-  lastSelectedHero: HeroInterface;
+  lastSelectedHero: HeroInterface | null = this.getLastHeroFromStorageOrNull();
 
-  private baseHeroesUrl: string =
-    'https://www.superheroapi.com/api.php/1276931142665573/search/';
+  private baseHeroesUrl: string = `https://www.superheroapi.com/api.php/${CONSTANTS.API_TOKEN}/search/`;
 
   constructor(
     private http: HttpClient,
@@ -34,8 +33,13 @@ export class HeroesService {
   getSuccessfullQueries(): string[] | [] {
     return this.succesfullQueries;
   }
+
   getSelectedHeroes(): HeroInterface[] {
     return this.selectedHeroes;
+  }
+
+  getLastSelectedHero(): HeroInterface {
+    return this.lastSelectedHero;
   }
 
   addNewQuery(query: string): void {
@@ -45,18 +49,28 @@ export class HeroesService {
   }
 
   addToSelected(selectedHero: HeroInterface): void {
-    const isAlreadySelected = this.selectedHeroes.findIndex(
-      (heroe) => heroe.id === selectedHero.id
-    );
-
-    isAlreadySelected >= 0
-      ? this.selectedHeroes.splice(isAlreadySelected, 1)
-      : this.selectedHeroes.push(selectedHero);
+    this.selectedHeroes.push(selectedHero);
+    this.lastSelectedHero = { ...selectedHero };
 
     this.localStorageService.setItem(
       CONSTANTS.SELECTED_HEROES,
       this.selectedHeroes
     );
+  }
+
+  removeFromSelected(id: string): void {
+    const index = this.selectedHeroes.findIndex((hero) => hero.id === id);
+
+    this.selectedHeroes.splice(index, 1);
+    this.localStorageService.setItem(
+      CONSTANTS.SELECTED_HEROES,
+      this.selectedHeroes
+    );
+
+    if (this.lastSelectedHeroDeleted(id)) {
+      this.lastSelectedHero = this.getLastHeroOrNull(this.selectedHeroes);
+      console.log(this.lastSelectedHero);
+    }
   }
 
   private transformResponse(response: any): HeroInterface {
@@ -67,6 +81,20 @@ export class HeroesService {
       url: response.image.url,
       selected: false,
     };
+  }
+
+  private getLastHeroOrNull(heroes: HeroInterface[]): HeroInterface | null {
+    return heroes.length === 0 ? null : heroes[heroes.length - 1];
+  }
+
+  private getLastHeroFromStorageOrNull(): HeroInterface | null {
+    return this.selectedHeroes.length === 0
+      ? null
+      : this.selectedHeroes[this.selectedHeroes.length - 1];
+  }
+
+  private lastSelectedHeroDeleted(id: string): boolean {
+    return this.lastSelectedHero.id === id;
   }
 
   searchHeroes(query: string): Observable<HeroInterface[]> {
