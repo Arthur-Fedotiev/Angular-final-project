@@ -10,9 +10,6 @@ import { HeroesService } from 'src/app/shared/services/heroes.service';
 })
 export class HeroesSearchComponent implements OnInit {
   @Input() searchLetter: string;
-  // set searchLetter(searchLetter: string) {
-  //   this.letter = searchLetter;
-  // }
   @Output() searchHero = new EventEmitter<string>();
 
   letter: string = '';

@@ -1,19 +1,5 @@
 <div *ngIf="!loading; else spinner" class="page-container">
-    <div class="letter-wrapper">
-        <mat-list>
-            <mat-list-item (click)="toggleSortPanel()"> <button mat-mini-fab color="primary">
-                    {{searchLetter}}
-                </button> </mat-list-item>
-        </mat-list>
-        <mat-list *ngIf="showSortPanel" class="hidden-list">
-            <mat-list-item *ngFor="let letter of alphabet.letters"
-                (click)="changesearchLetter($event.target.textContent)">
-                <button mat-mini-fab color='accent'>
-                    {{letter}}
-                </button>
-            </mat-list-item>
-        </mat-list>
-    </div>
+    <app-alphabetical-search (alphabeticalSearch)="searchByletter($event)"></app-alphabetical-search>
     <app-heroes-search [searchLetter]="searchLetter" (searchHero)="searchHero($event)"></app-heroes-search>
     <app-heroes-list *ngIf="heroes.length" [heroes]="heroes" (heroSelect)="heroSelect($event)"></app-heroes-list>
 </div>

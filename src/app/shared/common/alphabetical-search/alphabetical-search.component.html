@@ -1,0 +1,14 @@
+<div class="letter-wrapper">
+    <mat-list>
+        <mat-list-item (click)="toggleSortPanel()"> <button mat-mini-fab color="primary">
+                {{searchLetter}}
+            </button> </mat-list-item>
+    </mat-list>
+    <mat-list *ngIf="showSortPanel" class="hidden-list">
+        <mat-list-item *ngFor="let letter of alphabet.letters" (click)="handleLetterClick($event.target.textContent)">
+            <button mat-mini-fab color='accent'>
+                {{letter}}
+            </button>
+        </mat-list-item>
+    </mat-list>
+</div>

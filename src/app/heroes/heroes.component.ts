@@ -2,7 +2,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { IHero } from '../shared/interfaces/heroInterface';
-import { alphabetToken } from '../shared/providers';
 import { HeroesService } from '../shared/services/heroes.service';
 import { NotificationService } from '../shared/services/notification.service';
 
@@ -14,8 +13,7 @@ import { NotificationService } from '../shared/services/notification.service';
 export class HeroesComponent implements OnInit {
   heroes: IHero[] = [];
   selectedHeroes: IHero[];
-  searchLetter: string = 'A';
-  showSortPanel: boolean = false;
+  searchLetter: string = '';
   eror: boolean = true;
   loading: boolean = false;
 
@@ -23,22 +21,17 @@ export class HeroesComponent implements OnInit {
 
   constructor(
     private heroesService: HeroesService,
-    private notificationService: NotificationService,
-    @Inject(alphabetToken) public alphabet
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
     this.selectedHeroes = this.heroesService.getSelectedHeroes();
   }
 
-  toggleSortPanel(): void {
-    this.showSortPanel = !this.showSortPanel;
-  }
-
-  changesearchLetter(letter: string): void {
-    this.searchLetter = letter;
-    this.toggleSortPanel();
-    this.searchHero(letter);
+  searchByletter(searchLetter: string): void {
+    console.log(searchLetter);
+    this.searchLetter = searchLetter;
+    this.searchHero(searchLetter);
   }
 
   searchHero(heroName: string): void {
