@@ -8,12 +8,16 @@ import { MaterialModule } from '../material.module';
 import { HeroesListComponent } from './heroes-list/heroes-list.component';
 import { BattleHistoryComponent } from './battle-history/battle-history.component';
 import { ReusedComponentsModule } from '../reused-components.module';
+import { PowerupsComponent } from './powerups/powerups.component';
+import { SortingPipe } from '../shared/pipes/sortDescend.pipe';
 
 @NgModule({
   declarations: [
     UserPageComponent,
     HeroesListComponent,
     BattleHistoryComponent,
+    PowerupsComponent,
+    SortingPipe,
   ],
   imports: [
     CommonModule,

@@ -4,6 +4,8 @@ export default {
   USERS: 'USERS',
   QUERIES: 'QUERIES',
   SELECTED_HEROES: 'SELECTED_HEROES',
+  POWERUPS: 'POWERUPS',
+  BATTLE_HISTORY: 'BATTLE_HISTORY',
 
   LOGIN_SUCCESS: "Welcome back, lets's play a game!",
   LOGIN_WRONG_PASSWORD: 'Unfortunatelly, password is wrong. Please try again.',

@@ -11,6 +11,7 @@ import { NotificationService } from './notification.service';
 import { UsersService } from './users.service';
 import { LocalStorageService } from './local-storage.service';
 import { HeroesService } from './heroes.service';
+import { UserRecordsService } from './user-records.service';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +27,8 @@ export class AuthService {
     private notificationService: NotificationService,
     private usersService: UsersService,
     private localStorageService: LocalStorageService,
-    private heroesService: HeroesService
+    private heroesService: HeroesService,
+    private userRecordsService: UserRecordsService
   ) {}
 
   private getExpirationDate(): number {
@@ -36,8 +38,8 @@ export class AuthService {
   signup(newUser: IUser): void {
     const expirationDate = this.getExpirationDate();
 
-    this.localStorageService.setItem(AUTH_CONST.QUERIES, []);
-    this.localStorageService.setItem(AUTH_CONST.SELECTED_HEROES, []);
+    this.localStorageService.initializeLocalStorage();
+
     this.usersService.addNewUserToLocalStorage(newUser);
     this.setActiveSession(expirationDate);
     this.isActiveSession.next(true);
@@ -57,8 +59,7 @@ export class AuthService {
 
     const expirationDate = this.getExpirationDate();
 
-    this.localStorageService.setItem(AUTH_CONST.QUERIES, []);
-    this.localStorageService.setItem(AUTH_CONST.SELECTED_HEROES, []);
+    this.localStorageService.initializeLocalStorage();
     this.setActiveSession(expirationDate);
     this.isActiveSession.next(true);
     this.router.navigateByUrl('/heroes');
@@ -67,9 +68,7 @@ export class AuthService {
   }
 
   logout(): void {
-    this.localStorageService.emptyLocalStorage();
-    this.heroesService.emptyHeroesStorage();
-
+    this.restoreDefaultStoragesAndServices();
     this.setActiveSession(false);
     this.isActiveSession.next(false);
     this.router.navigateByUrl('/login');
@@ -81,8 +80,7 @@ export class AuthService {
     );
 
     if (!isTokenExists) {
-      this.heroesService.emptyHeroesStorage();
-      this.localStorageService.emptyLocalStorage();
+      this.restoreDefaultStoragesAndServices();
       return false;
     }
 
@@ -91,12 +89,17 @@ export class AuthService {
       this.localStorageService.getItem(AUTH_CONST.AUTHENTICATION_KEY);
 
     if (sessionIsExpired) {
-      this.localStorageService.emptyLocalStorage();
-      this.heroesService.emptyHeroesStorage();
+      this.restoreDefaultStoragesAndServices();
       this.notificationService.notify(AUTH_CONST.SESSION_EXPIRED);
     }
 
     return !sessionIsExpired;
+  }
+
+  private restoreDefaultStoragesAndServices(): void {
+    this.localStorageService.emptyLocalStorage();
+    this.heroesService.emptyHeroesStorage();
+    this.userRecordsService.restoreDefaultUserRecords();
   }
 
   private setActiveSession(expirationDate: number | boolean): void {
