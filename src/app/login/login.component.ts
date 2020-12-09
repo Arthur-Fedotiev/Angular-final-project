@@ -10,6 +10,7 @@ import { PasswordValidator } from 'src/app/shared/validators/passwordValidator';
 import { UsernameValidator } from 'src/app/shared/validators/usernameValidator';
 import { AuthService } from '../shared/services/auth.service';
 import { IUser, IFormControls } from '../shared/interfaces/authInterface';
+import { Form } from '../shared/enums';
 
 @Component({
   selector: 'app-login',
@@ -18,8 +19,8 @@ import { IUser, IFormControls } from '../shared/interfaces/authInterface';
 })
 export class LoginComponent implements OnInit {
   isLogging: boolean = true;
-  formTitle: string = 'Login';
-  toggleBtnTitle: string = 'SignUp';
+  formTitle: string = Form.Login;
+  toggleBtnTitle: string = Form.Signup;
   loginForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private auth: AuthService) {}
@@ -33,8 +34,8 @@ export class LoginComponent implements OnInit {
   }
 
   set titles(isLogging: boolean) {
-    this.formTitle = isLogging ? 'Login' : 'Signup';
-    this.toggleBtnTitle = isLogging ? 'Signup' : 'Cancel';
+    this.formTitle = isLogging ? Form.Login : Form.Signup;
+    this.toggleBtnTitle = isLogging ? Form.Signup : Form.Cancel;
   }
 
   getEmailFormControl(): FormControl {

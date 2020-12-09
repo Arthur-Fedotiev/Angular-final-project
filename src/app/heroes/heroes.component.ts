@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { IHero } from '../shared/interfaces/heroInterface';
@@ -29,7 +29,6 @@ export class HeroesComponent implements OnInit {
   }
 
   searchByletter(searchLetter: string): void {
-    console.log(searchLetter);
     this.searchLetter = searchLetter;
     this.searchHero(searchLetter);
   }
@@ -67,9 +66,7 @@ export class HeroesComponent implements OnInit {
   }
 
   heroSelect(id: string): void {
-    const indexOfSelected = this.heroes.findIndex((hero) => hero.id === id);
-
-    this.heroes[indexOfSelected].selected = true;
+    this.heroes.find((hero) => hero.id === id).selected = true;
   }
 
   ngOnDestroy(): void {
