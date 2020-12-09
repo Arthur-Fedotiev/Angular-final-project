@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HeroInterface } from 'src/app/shared/interfaces/heroInterface';
+import { IHero } from 'src/app/shared/interfaces/heroInterface';
 import { HeroesService } from 'src/app/shared/services/heroes.service';
 
 @Component({
@@ -8,8 +8,8 @@ import { HeroesService } from 'src/app/shared/services/heroes.service';
   styleUrls: ['./heroes-list.component.css'],
 })
 export class HeroesListComponent implements OnInit {
-  heroes: HeroInterface[];
-  lastSelectedHero: HeroInterface | null;
+  heroes: IHero[];
+  lastSelectedHero: IHero | null;
 
   constructor(private heroService: HeroesService) {}
 
@@ -18,8 +18,8 @@ export class HeroesListComponent implements OnInit {
     this.lastSelectedHero = this.heroService.getLastSelectedHero();
   }
 
-  removeFromSelected(id: string): void {
-    this.heroService.removeFromSelected(id);
+  removeFromSelected(hero: IHero): void {
+    this.heroService.removeFromSelected(hero.id);
     this.lastSelectedHero = this.heroService.getLastSelectedHero();
   }
 }

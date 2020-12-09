@@ -2,10 +2,10 @@
     <mat-form-field class="search-full-width">
         <mat-label>Find hero</mat-label>
         <input #heroNameSearch matInput placeholder="Find Hero" formControlName="heroName" [value]="letter">
-        <button mat-icon-button color="accent" matSuffix>
+        <button mat-icon-button matSuffix color="accent" [disabled]="!searchForm.valid">
             <mat-icon>search</mat-icon>
         </button>
-        <mat-error align="end" *ngIf="searchForm.get('heroName').hasError('pattern')">
+        <mat-error align="end" *ngIf="hasInvalidPattern()">
             A valid hero name is required
         </mat-error>
     </mat-form-field>
@@ -25,7 +25,7 @@
                     <mat-icon>search</mat-icon>
                 </button>
             </mat-list-item>
-            <mat-list-item *ngFor="let search of recentSearches">{{search}}</mat-list-item>
+            <mat-list-item *ngFor="let search of recentSearches">{{ search }}</mat-list-item>
         </mat-list>
     </mat-card-content>
 </mat-card>

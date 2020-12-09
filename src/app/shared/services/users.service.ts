@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { UserInfo } from '../interfaces/authInterface';
-import CONSTANTS from '../constants';
+import { IUser } from '../interfaces/authInterface';
+import AUTH_CONST from '../constants/authConstants';
 import { NotificationService } from './notification.service';
 
 @Injectable({
@@ -9,42 +9,42 @@ import { NotificationService } from './notification.service';
 export class UsersService {
   constructor(private notificationService: NotificationService) {}
 
-  getUsersFromStorage(): UserInfo[] {
-    return JSON.parse(localStorage.getItem(CONSTANTS.USERS));
+  getUsersFromStorage(): IUser[] {
+    return JSON.parse(localStorage.getItem(AUTH_CONST.USERS));
   }
 
   setEmptyLocalStoage(): void {
-    localStorage.setItem(CONSTANTS.USERS, JSON.stringify([]));
+    localStorage.setItem(AUTH_CONST.USERS, JSON.stringify([]));
   }
 
-  addNewUserToLocalStorage(newUser: UserInfo): void {
+  addNewUserToLocalStorage(newUser: IUser): void {
     const usersFromStorage = this.getUsersFromStorage();
 
     this.isNewUser(newUser)
       ? this.handleSavingToLocalStorage(usersFromStorage, newUser)
-      : this.notificationService.notify(CONSTANTS.SIGNUP_EXISTED);
+      : this.notificationService.notify(AUTH_CONST.SIGNUP_EXISTED);
   }
 
-  isNewUser(newUser: UserInfo): boolean {
+  isNewUser(newUser: IUser): boolean {
     const usersFromStorage = this.getUsersFromStorage();
 
     return !!usersFromStorage.findIndex(
-      (user: UserInfo) => user.email === newUser.email
+      (user: IUser) => user.email === newUser.email
     );
   }
 
   private handleSavingToLocalStorage(
-    usersFromStorage: Array<UserInfo | null>,
-    newUser: UserInfo
+    usersFromStorage: Array<IUser | null>,
+    newUser: IUser
   ): void {
     localStorage.setItem(
-      CONSTANTS.USERS,
+      AUTH_CONST.USERS,
       JSON.stringify([...usersFromStorage, newUser])
     );
-    this.notificationService.notify(CONSTANTS.SIGNUP_SUCCESS);
+    this.notificationService.notify(AUTH_CONST.SIGNUP_SUCCESS);
   }
 
   static isLocalStorageexists(): boolean {
-    return !!JSON.parse(localStorage.getItem(CONSTANTS.USERS));
+    return !!JSON.parse(localStorage.getItem(AUTH_CONST.USERS));
   }
 }

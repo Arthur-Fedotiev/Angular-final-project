@@ -1,12 +1,12 @@
-export interface HeroInterface {
+export interface IHero {
   id: string;
   name: string;
-  powerstats: Stats;
+  powerstats: IStats;
   url: string;
   selected: boolean;
 }
 
-export interface Stats {
+export interface IStats {
   intelligence: string;
   strength: string;
   speed: string;
@@ -15,18 +15,18 @@ export interface Stats {
   combat: string;
 }
 
-export interface HeroAPIResponse {
-  heroes: HeroInterface[];
+export interface IHeroAPIResponse {
+  heroes: IHero[];
 }
 
 export interface HeroSearch {
   heroName: string;
 }
 
-export interface APIResults {
+export interface IAPIResults {
   id: string;
   name: string;
-  powerstats: Stats;
+  powerstats: IStats;
   image: { [key: string]: string };
   selected: boolean;
 }

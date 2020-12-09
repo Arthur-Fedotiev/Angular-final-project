@@ -1,15 +1,20 @@
 import { AbstractControl } from '@angular/forms';
 
-export interface UserInfo {
+export interface IUser {
   username?: string;
   email: string;
   password: string;
 }
 
-export interface FormControls {
+export interface IFormControls {
   [key: string]: AbstractControl;
 }
 
-export interface AuthResult {
+export interface IAuthResult {
   [key: string]: boolean;
+}
+
+export interface IEnteredCredentials {
+  email: string;
+  password: string;
 }

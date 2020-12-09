@@ -9,6 +9,7 @@ import { HeroesListComponent } from './heroes-list/heroes-list.component';
 import { HeroesSearchComponent } from './heroes-search/heroes-search.component';
 import { SelectedPipe } from '../shared/pipes/selected.pipe';
 import { alphabet, alphabetToken } from '../shared/providers';
+import { ReusedComponentsModule } from '../reused-components.module';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { alphabet, alphabetToken } from '../shared/providers';
     HeroesRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    ReusedComponentsModule,
     MaterialModule,
   ],
   providers: [{ provide: alphabetToken, useValue: alphabet }],

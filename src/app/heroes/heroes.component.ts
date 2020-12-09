@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { HeroInterface } from '../shared/interfaces/heroInterface';
+import { IHero } from '../shared/interfaces/heroInterface';
 import { alphabetToken } from '../shared/providers';
 import { HeroesService } from '../shared/services/heroes.service';
 import { NotificationService } from '../shared/services/notification.service';
@@ -14,8 +14,8 @@ import { NotificationService } from '../shared/services/notification.service';
 export class HeroesComponent implements OnInit {
   private readonly heroesSubscriptionDestroyed$: Subject<boolean> = new Subject<boolean>();
 
-  heroes: HeroInterface[] = [];
-  selectedHeroes: HeroInterface[];
+  heroes: IHero[] = [];
+  selectedHeroes: IHero[];
   searchLetter: string = 'A';
   showSortPanel: boolean = false;
   eror: boolean = true;
@@ -61,12 +61,12 @@ export class HeroesComponent implements OnInit {
       );
   }
 
-  setHeroes(heroes: HeroInterface[]): HeroInterface[] {
+  setHeroes(heroes: IHero[]): IHero[] {
     return heroes.map((hero) => {
       const selectedHeroes = [...this.heroesService.getSelectedHeroes()];
 
       return selectedHeroes.findIndex(
-        (selectedHero: HeroInterface) => selectedHero.id === hero.id
+        (selectedHero: IHero) => selectedHero.id === hero.id
       ) >= 0
         ? { ...hero, selected: true }
         : hero;

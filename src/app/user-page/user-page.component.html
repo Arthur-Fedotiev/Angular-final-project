@@ -2,8 +2,11 @@
     <mat-tab label="Heroes List">
         <ng-template matTabContent>
             <div class="heroes-list-wrapper">
-                <app-heroes-list></app-heroes-list>
-                <button class="back-to-hero-select" mat-fab color="primary" routerLink="/heroes">
+                <div class="page-container">
+                    <app-heroes-list></app-heroes-list>
+                </div>
+
+                <button mat-fab class="back-to-hero-select" color="primary" routerLink="/heroes">
                     <mat-icon>add</mat-icon>
                 </button>
             </div>

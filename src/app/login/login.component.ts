@@ -9,7 +9,7 @@ import { EmailValidator } from 'src/app/shared/validators/emailValidator';
 import { PasswordValidator } from 'src/app/shared/validators/passwordValidator';
 import { UsernameValidator } from 'src/app/shared/validators/usernameValidator';
 import { AuthService } from '../shared/services/auth.service';
-import { UserInfo, FormControls } from '../shared/interfaces/authInterface';
+import { IUser, IFormControls } from '../shared/interfaces/authInterface';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.getLoginFormGroup();
   }
 
-  get form(): FormControls {
+  get form(): IFormControls {
     return this.loginForm.controls;
   }
 
@@ -98,18 +98,21 @@ export class LoginComponent implements OnInit {
   }
 
   renderError(inputType: string, errorType: string): boolean {
-    if (
+    return (
       this.form[inputType].touched &&
       this.form[inputType].errors &&
       this.form[inputType].errors[errorType]
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+    );
   }
 
-  onSubmit(formDate: UserInfo): void {
+  isError(): boolean {
+    return (
+      (this.loginForm.touched || this.loginForm.dirty) &&
+      !!this.loginForm.errors
+    );
+  }
+
+  onSubmit(formDate: IUser): void {
     this.isLogging ? this.auth.login(formDate) : this.auth.signup(formDate);
   }
 }

@@ -21,7 +21,7 @@
 
             <p>
                 <mat-form-field>
-                    <input type="email" matInput placeholder="Email" formControlName="email" autocomplete="username"
+                    <input matInput type="email" placeholder="Email" formControlName="email" autocomplete="username"
                         required />
                 </mat-form-field>
             </p>
@@ -38,14 +38,13 @@
 
             <p>
                 <mat-form-field>
-                    <input type="password" matInput placeholder="Password" formControlName="password"
+                    <input matInput type="password" placeholder="Password" formControlName="password"
                         autocomplete="new-password" />
                     <mat-hint align="end">Password should not contain parts of your e-mail. It must include at least one
                         uppercase and lowercase letter, special symbol, and be longer than 5 charachters </mat-hint>
                 </mat-form-field>
             </p>
-            <div *ngIf="(loginForm.touched || loginForm.dirty) && loginForm.errors"
-                class="cross-validation-error-message alert alert-danger">
+            <div *ngIf="isError()" class="cross-validation-error-message alert alert-danger">
                 <p *ngIf="loginForm.errors?.passwordIsUnique" class="error">
                     {{ loginForm.errors?.passwordIsUnique.passwordUniqnessAlert }}
                 </p>
@@ -66,8 +65,8 @@
 
 
             <div class="button">
-                <button [textContent]="formTitle" type="submit" mat-button [disabled]="!loginForm.valid"></button>
-                <button [textContent]="toggleBtnTitle" type="button" mat-button (click)="toggleForm()"></button>
+                <button mat-button type="submit" [textContent]="formTitle" [disabled]="!loginForm.valid"></button>
+                <button mat-button type="button" [textContent]="toggleBtnTitle" (click)="toggleForm()"></button>
             </div>
         </form>
     </mat-card-content>

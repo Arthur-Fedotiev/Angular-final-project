@@ -4,10 +4,10 @@ import {
   ValidatorFn,
   FormGroup,
 } from '@angular/forms';
-import CONSTANTS from '../constants';
+import VALIDATE_CONST from '../constants/validateConstants';
 
 export class PasswordValidator {
-  static pattern = CONSTANTS.PASSWORD_PATTERN;
+  static pattern = VALIDATE_CONST.PASSWORD_PATTERN;
 
   static cannotContainSpaces(
     control: AbstractControl
@@ -35,7 +35,7 @@ export class PasswordValidator {
     return password && email && !passwordIsUnique
       ? {
           passwordIsUnique: {
-            passwordUniqnessAlert: CONSTANTS.PASSWORD_ALERT,
+            passwordUniqnessAlert: VALIDATE_CONST.PASSWORD_ALERT,
           },
         }
       : null;

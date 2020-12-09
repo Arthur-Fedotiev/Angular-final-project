@@ -1,29 +1,33 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { APIResults, HeroInterface } from '../interfaces/heroInterface';
+import { IAPIResults, IHero, IStats } from '../interfaces/heroInterface';
 import { catchError, map, retry } from 'rxjs/operators';
-import CONSTANTS from '../constants';
+import AUTH_CONST from '../constants/authConstants';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HeroesService {
-  succesfullQueries: string[] = this.localStorageService.getItem(
-    CONSTANTS.QUERIES
-  );
-  selectedHeroes: HeroInterface[] = this.localStorageService.getItem(
-    CONSTANTS.SELECTED_HEROES
-  );
-  lastSelectedHero: HeroInterface | null = this.getLastHeroFromStorageOrNull();
+  succesfullQueries: string[] = this.querriesFromStorage;
+  selectedHeroes: IHero[] = this.selectedHeroesFromStorage;
+  lastSelectedHero: IHero | null = this.getLastHeroFromStorageOrNull();
 
-  private baseHeroesUrl: string = `https://www.superheroapi.com/api.php/${CONSTANTS.API_TOKEN}/search/`;
+  private baseHeroesUrl: string = `https://www.superheroapi.com/api.php/${AUTH_CONST.API_TOKEN}/search/`;
 
   constructor(
     private http: HttpClient,
     private localStorageService: LocalStorageService
   ) {}
+
+  private get querriesFromStorage(): string[] {
+    return this.localStorageService.getItem(AUTH_CONST.QUERIES);
+  }
+
+  private get selectedHeroesFromStorage(): IHero[] {
+    return this.localStorageService.getItem(AUTH_CONST.SELECTED_HEROES);
+  }
 
   emptyHeroesStorage(): void {
     this.succesfullQueries = [];
@@ -34,25 +38,31 @@ export class HeroesService {
     return this.succesfullQueries;
   }
 
-  getSelectedHeroes(): HeroInterface[] {
+  getSelectedHeroes(): IHero[] {
     return this.selectedHeroes;
   }
 
-  getLastSelectedHero(): HeroInterface {
+  getLastSelectedHero(): IHero {
     return this.lastSelectedHero;
   }
 
   addNewQuery(query: string): void {
-    !this.succesfullQueries.includes(query) &&
-      this.succesfullQueries.push(query);
-    this.localStorageService.setItem(CONSTANTS.QUERIES, this.succesfullQueries);
+    !!this.succesfullQueries && this.succesfullQueries.length === 0
+      ? this.succesfullQueries.push(query)
+      : !this.succesfullQueries.includes(query) &&
+        this.succesfullQueries.push(query);
+
+    this.localStorageService.setItem(
+      AUTH_CONST.QUERIES,
+      this.succesfullQueries
+    );
   }
 
-  addToSelected(selectedHero: HeroInterface): void {
+  addToSelected(selectedHero: IHero): void {
     this.selectedHeroes.push(selectedHero);
     this.lastSelectedHero = { ...selectedHero };
     this.localStorageService.setItem(
-      CONSTANTS.SELECTED_HEROES,
+      AUTH_CONST.SELECTED_HEROES,
       this.selectedHeroes
     );
   }
@@ -62,7 +72,7 @@ export class HeroesService {
 
     this.selectedHeroes.splice(index, 1);
     this.localStorageService.setItem(
-      CONSTANTS.SELECTED_HEROES,
+      AUTH_CONST.SELECTED_HEROES,
       this.selectedHeroes
     );
 
@@ -71,7 +81,7 @@ export class HeroesService {
     }
   }
 
-  private transformResponse(response: APIResults): HeroInterface {
+  private transformResponse(response: IAPIResults): IHero {
     return {
       id: response.id,
       name: response.name,
@@ -81,12 +91,12 @@ export class HeroesService {
     };
   }
 
-  private getLastHeroOrNull(heroes: HeroInterface[]): HeroInterface | null {
+  private getLastHeroOrNull(heroes: IHero[]): IHero | null {
     return heroes.length === 0 ? null : heroes[heroes.length - 1];
   }
 
-  private getLastHeroFromStorageOrNull(): HeroInterface | null {
-    return this.selectedHeroes.length === 0
+  private getLastHeroFromStorageOrNull(): IHero | null {
+    return !this.selectedHeroes || this.selectedHeroes.length === 0
       ? null
       : this.selectedHeroes[this.selectedHeroes.length - 1];
   }
@@ -95,7 +105,7 @@ export class HeroesService {
     return this.lastSelectedHero.id === id;
   }
 
-  searchHeroes(query: string): Observable<HeroInterface[]> {
+  searchHeroes(query: string): Observable<IHero[]> {
     const url = this.baseHeroesUrl + query.trim();
 
     return this.http.get<Record<string, []>>(url).pipe(
@@ -111,6 +121,10 @@ export class HeroesService {
   }
 
   getQueriesFromStorage(): string[] | any[] {
-    return this.localStorageService.getItem(CONSTANTS.QUERIES) || [];
+    return this.localStorageService.getItem(AUTH_CONST.QUERIES) || [];
+  }
+
+  static getIStats(powerIStats: IStats): Array<[string, string]> {
+    return Object.entries(powerIStats);
   }
 }

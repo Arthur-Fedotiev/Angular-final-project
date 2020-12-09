@@ -18,7 +18,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSortModule } from '@angular/material/sort';
-//import { MatSort } from '@angular/material/sort';
 
 @NgModule({
   exports: [

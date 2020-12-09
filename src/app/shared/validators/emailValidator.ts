@@ -1,5 +1,5 @@
-import CONSTANTS from '../constants';
+import VALIDATE_CONST from '../constants/validateConstants';
 
 export class EmailValidator {
-  static pattern = CONSTANTS.EMAIL_PATTERN;
+  static pattern = VALIDATE_CONST.EMAIL_PATTERN;
 }

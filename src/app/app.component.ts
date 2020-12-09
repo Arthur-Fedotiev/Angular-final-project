@@ -13,15 +13,16 @@ export class AppComponent {
   title = 'angular-superhero-project';
   isActiveSession$ = this.authService.isActiveSession$.pipe(shareReplay(1));
 
-  ngOnInit() {
-    !UsersService.isLocalStorageexists() &&
-      this.usersService.setEmptyLocalStoage();
-  }
   constructor(
     private authService: AuthService,
     private usersService: UsersService,
     private heroesService: HeroesService
   ) {}
+
+  ngOnInit(): void {
+    !UsersService.isLocalStorageexists() &&
+      this.usersService.setEmptyLocalStoage();
+  }
 
   logout(): void {
     this.authService.logout();

@@ -1,13 +1,13 @@
-<mat-drawer-container class="container" autosize>
+<mat-drawer-container autosize class="container">
   <mat-drawer #drawer class="sidenav">
     <p>Menu</p>
-    <button color="primary" mat-button routerLink="/heroes">Home</button>
-    <button color="primary" mat-button routerLink="/login">Login test</button>
+    <button mat-button color="primary" routerLink="/heroes">Home</button>
+    <button mat-button color="primary" routerLink="/login">Login test</button>
   </mat-drawer>
   <div class="sidenav-content">
     <mat-toolbar color="primary">
       <mat-toolbar-row>
-        <button *ngIf="isActiveSession$ | async" mat-icon-button (click)="drawer.toggle()">
+        <button mat-icon-button *ngIf="isActiveSession$ | async" (click)="drawer.toggle()">
           <mat-icon class="">menu</mat-icon>
         </button>
         <span>Title</span>
@@ -16,7 +16,7 @@
           <button mat-mini-fab routerLink="/user">
             <mat-icon>person</mat-icon>
           </button>
-          <button class="logout" color="warn" mat-button (click)="logout()">
+          <button mat-button class="logout" color="warn" (click)="logout()">
             Logout
           </button>
         </div>

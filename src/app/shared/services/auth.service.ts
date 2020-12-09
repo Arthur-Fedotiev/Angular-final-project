@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { UserInfo, AuthResult } from '../interfaces/authInterface';
-import CONSTANTS from '../constants';
+import {
+  IUser,
+  IAuthResult,
+  IEnteredCredentials,
+} from '../interfaces/authInterface';
+import AUTH_CONST from '../constants/authConstants';
 import { NotificationService } from './notification.service';
 import { UsersService } from './users.service';
 import { LocalStorageService } from './local-storage.service';
@@ -29,43 +33,44 @@ export class AuthService {
     return new Date(Date.now() + 1 * 3600 * 600).getTime();
   }
 
-  signup(newUser: UserInfo): void {
+  signup(newUser: IUser): void {
     const expirationDate = this.getExpirationDate();
 
-    this.localStorageService.setItem(CONSTANTS.QUERIES, []);
-    this.localStorageService.setItem(CONSTANTS.SELECTED_HEROES, []);
+    this.localStorageService.setItem(AUTH_CONST.QUERIES, []);
+    this.localStorageService.setItem(AUTH_CONST.SELECTED_HEROES, []);
     this.usersService.addNewUserToLocalStorage(newUser);
     this.setActiveSession(expirationDate);
     this.isActiveSession.next(true);
     this.router.navigateByUrl('/heroes');
   }
 
-  login(userInfo: UserInfo): void {
-    const authResult: AuthResult = this.authenticateUser(userInfo);
+  login(IUser: IUser): void {
+    const IAuthResult: IAuthResult = this.authenticateUser(IUser);
 
-    if (authResult.noUser) {
-      return this.notificationService.notify(CONSTANTS.LOGIN_NO_USER);
+    if (IAuthResult.noUser) {
+      return this.notificationService.notify(AUTH_CONST.LOGIN_NO_USER);
     }
 
-    if (authResult.wrongPassword) {
-      return this.notificationService.notify(CONSTANTS.LOGIN_WRONG_PASSWORD);
+    if (IAuthResult.wrongPassword) {
+      return this.notificationService.notify(AUTH_CONST.LOGIN_WRONG_PASSWORD);
     }
 
     const expirationDate = this.getExpirationDate();
 
-    this.localStorageService.setItem(CONSTANTS.QUERIES, []);
-    this.localStorageService.setItem(CONSTANTS.SELECTED_HEROES, []);
+    this.localStorageService.setItem(AUTH_CONST.QUERIES, []);
+    this.localStorageService.setItem(AUTH_CONST.SELECTED_HEROES, []);
     this.setActiveSession(expirationDate);
     this.isActiveSession.next(true);
     this.router.navigateByUrl('/heroes');
 
-    return this.notificationService.notify(CONSTANTS.LOGIN_SUCCESS);
+    return this.notificationService.notify(AUTH_CONST.LOGIN_SUCCESS);
   }
 
   logout(): void {
-    this.localStorageService.daleteItem(CONSTANTS.AUTHENTICATION_KEY);
-    this.localStorageService.daleteItem(CONSTANTS.QUERIES);
-    this.localStorageService.daleteItem(CONSTANTS.SELECTED_HEROES);
+    this.localStorageService.daleteItem(AUTH_CONST.AUTHENTICATION_KEY);
+    this.localStorageService.daleteItem(AUTH_CONST.QUERIES);
+    this.localStorageService.daleteItem(AUTH_CONST.SELECTED_HEROES);
+    this.heroesService.lastSelectedHero = null;
 
     this.setActiveSession(false);
     this.isActiveSession.next(false);
@@ -74,52 +79,54 @@ export class AuthService {
 
   getIsActiveSession(): boolean {
     const isTokenExists: boolean = this.localStorageService.isInStorage(
-      CONSTANTS.AUTHENTICATION_KEY
+      AUTH_CONST.AUTHENTICATION_KEY
     );
 
     if (!isTokenExists) return false;
 
     const sessionIsExpired: boolean =
       Date.now() >
-      this.localStorageService.getItem(CONSTANTS.AUTHENTICATION_KEY);
+      this.localStorageService.getItem(AUTH_CONST.AUTHENTICATION_KEY);
 
     if (sessionIsExpired) {
-      this.localStorageService.daleteItem(CONSTANTS.AUTHENTICATION_KEY);
-      this.localStorageService.daleteItem(CONSTANTS.QUERIES);
+      this.localStorageService.daleteItem(AUTH_CONST.AUTHENTICATION_KEY);
+      this.localStorageService.daleteItem(AUTH_CONST.QUERIES);
       this.heroesService.emptyHeroesStorage();
-      this.notificationService.notify(CONSTANTS.SESSION_EXPIRED);
-      return false;
+      this.heroesService.lastSelectedHero = null;
+      this.notificationService.notify(AUTH_CONST.SESSION_EXPIRED);
     }
 
-    return true;
+    return !sessionIsExpired;
   }
 
   private setActiveSession(expirationDate: number | boolean): void {
     expirationDate
       ? this.localStorageService.setItem(
-          CONSTANTS.AUTHENTICATION_KEY,
+          AUTH_CONST.AUTHENTICATION_KEY,
           expirationDate
         )
-      : this.localStorageService.daleteItem(CONSTANTS.AUTHENTICATION_KEY);
+      : this.localStorageService.daleteItem(AUTH_CONST.AUTHENTICATION_KEY);
   }
 
-  private authenticateUser(userToCheck: UserInfo): AuthResult {
-    let authResult: AuthResult = { noUser: false, wrongPassword: false };
-
+  private authenticateUser({
+    email: enteredEmail,
+    password: enteredPassword,
+  }: IEnteredCredentials): IAuthResult {
+    const IAuthResult: IAuthResult = { noUser: false, wrongPassword: false };
     const storedUsers = this.usersService.getUsersFromStorage();
     const isRegisteredUser = storedUsers.findIndex(
-      (user) => user.email === userToCheck.email
+      ({ email }) => email === enteredEmail
     );
 
     if (!!isRegisteredUser) {
-      authResult.noUser = true;
+      IAuthResult.noUser = true;
     }
 
     if (!isRegisteredUser) {
-      authResult.wrongPassword =
-        storedUsers[isRegisteredUser].password !== userToCheck.password;
+      IAuthResult.wrongPassword =
+        storedUsers[isRegisteredUser].password !== enteredPassword;
     }
 
-    return authResult;
+    return IAuthResult;
   }
 }

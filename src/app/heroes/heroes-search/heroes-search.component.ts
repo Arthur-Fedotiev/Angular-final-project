@@ -28,6 +28,10 @@ export class HeroesSearchComponent implements OnInit {
     this.recentSearches = this.heroesService.getSuccessfullQueries();
   }
 
+  hasInvalidPattern(): boolean {
+    return this.searchForm.get('heroName').hasError('pattern');
+  }
+
   getSearchForm(): FormGroup {
     return this.formBuilder.group({
       heroName: this.formBuilder.control('', Validators.pattern('[\\w]+')),
