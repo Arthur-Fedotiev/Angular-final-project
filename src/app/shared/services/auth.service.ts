@@ -67,10 +67,8 @@ export class AuthService {
   }
 
   logout(): void {
-    this.localStorageService.daleteItem(AUTH_CONST.AUTHENTICATION_KEY);
-    this.localStorageService.daleteItem(AUTH_CONST.QUERIES);
-    this.localStorageService.daleteItem(AUTH_CONST.SELECTED_HEROES);
-    this.heroesService.lastSelectedHero = null;
+    this.localStorageService.emptyLocalStorage();
+    this.heroesService.emptyHeroesStorage();
 
     this.setActiveSession(false);
     this.isActiveSession.next(false);
@@ -82,17 +80,19 @@ export class AuthService {
       AUTH_CONST.AUTHENTICATION_KEY
     );
 
-    if (!isTokenExists) return false;
+    if (!isTokenExists) {
+      this.heroesService.emptyHeroesStorage();
+      this.localStorageService.emptyLocalStorage();
+      return false;
+    }
 
     const sessionIsExpired: boolean =
       Date.now() >
       this.localStorageService.getItem(AUTH_CONST.AUTHENTICATION_KEY);
 
     if (sessionIsExpired) {
-      this.localStorageService.daleteItem(AUTH_CONST.AUTHENTICATION_KEY);
-      this.localStorageService.daleteItem(AUTH_CONST.QUERIES);
+      this.localStorageService.emptyLocalStorage();
       this.heroesService.emptyHeroesStorage();
-      this.heroesService.lastSelectedHero = null;
       this.notificationService.notify(AUTH_CONST.SESSION_EXPIRED);
     }
 
@@ -105,7 +105,7 @@ export class AuthService {
           AUTH_CONST.AUTHENTICATION_KEY,
           expirationDate
         )
-      : this.localStorageService.daleteItem(AUTH_CONST.AUTHENTICATION_KEY);
+      : this.localStorageService.deleteItem(AUTH_CONST.AUTHENTICATION_KEY);
   }
 
   private authenticateUser({

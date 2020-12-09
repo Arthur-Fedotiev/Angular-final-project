@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import AUTH_CONST from '../constants/authConstants';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ export class LocalStorageService {
     return this.isInStorage(key) ? JSON.parse(localStorage.getItem(key)) : null;
   }
 
-  daleteItem<T>(key: string): void {
+  deleteItem<T>(key: string): void {
     localStorage.removeItem(key);
   }
 
@@ -20,5 +21,11 @@ export class LocalStorageService {
 
   isInStorage(key: string): boolean {
     return !!localStorage.getItem(key);
+  }
+
+  emptyLocalStorage(): void {
+    this.deleteItem(AUTH_CONST.AUTHENTICATION_KEY);
+    this.deleteItem(AUTH_CONST.QUERIES);
+    this.deleteItem(AUTH_CONST.SELECTED_HEROES);
   }
 }

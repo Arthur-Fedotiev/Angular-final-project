@@ -9,9 +9,10 @@ import { HeroesService } from 'src/app/shared/services/heroes.service';
   styleUrls: ['./heroes-search.component.css'],
 })
 export class HeroesSearchComponent implements OnInit {
-  @Input() set searchLetter(searchLetter: string) {
-    this.letter = searchLetter;
-  }
+  @Input() searchLetter: string;
+  // set searchLetter(searchLetter: string) {
+  //   this.letter = searchLetter;
+  // }
   @Output() searchHero = new EventEmitter<string>();
 
   letter: string = '';

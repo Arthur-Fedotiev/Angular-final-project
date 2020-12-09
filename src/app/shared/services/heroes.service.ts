@@ -32,6 +32,7 @@ export class HeroesService {
   emptyHeroesStorage(): void {
     this.succesfullQueries = [];
     this.selectedHeroes = [];
+    this.lastSelectedHero = null;
   }
 
   getSuccessfullQueries(): string[] | [] {

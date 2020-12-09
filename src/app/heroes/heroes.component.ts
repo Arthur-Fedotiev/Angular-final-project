@@ -12,14 +12,14 @@ import { NotificationService } from '../shared/services/notification.service';
   styleUrls: ['./heroes.component.css'],
 })
 export class HeroesComponent implements OnInit {
-  private readonly heroesSubscriptionDestroyed$: Subject<boolean> = new Subject<boolean>();
-
   heroes: IHero[] = [];
   selectedHeroes: IHero[];
   searchLetter: string = 'A';
   showSortPanel: boolean = false;
   eror: boolean = true;
   loading: boolean = false;
+
+  private readonly heroesSubscriptionDestroyed$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private heroesService: HeroesService,
@@ -62,14 +62,14 @@ export class HeroesComponent implements OnInit {
   }
 
   setHeroes(heroes: IHero[]): IHero[] {
-    return heroes.map((hero) => {
-      const selectedHeroes = [...this.heroesService.getSelectedHeroes()];
+    const selectedHeroes: IHero[] = [...this.heroesService.getSelectedHeroes()];
 
-      return selectedHeroes.findIndex(
-        (selectedHero: IHero) => selectedHero.id === hero.id
-      ) >= 0
-        ? { ...hero, selected: true }
-        : hero;
+    return heroes.map((hero: IHero) => {
+      const oneOfSelected = selectedHeroes.find(
+        ({ id }: { id: string }) => id === hero.id
+      );
+
+      return !!oneOfSelected ? { ...hero, selected: true } : hero;
     });
   }
 
