@@ -14,7 +14,7 @@ export class HeroesService {
   selectedHeroes: IHero[] = this.selectedHeroesFromStorage;
   lastSelectedHero: IHero | null = this.getLastHeroFromStorageOrNull();
 
-  private baseHeroesUrl: string = `https://www.superheroapi.com/api.php/${AUTH_CONST.API_TOKEN}/search/`;
+  private baseHeroesUrl: string = `https://www.superheroapi.com/api.php/${AUTH_CONST.API_TOKEN}/`;
 
   constructor(
     private http: HttpClient,
@@ -107,11 +107,21 @@ export class HeroesService {
   }
 
   searchHeroes(query: string): Observable<IHero[]> {
-    const url = this.baseHeroesUrl + query.trim();
+    const url = this.baseHeroesUrl + 'search/' + query.trim();
 
     return this.http.get<Record<string, []>>(url).pipe(
       retry(1),
       map(({ results }) => results.map(this.transformResponse)),
+      catchError(this.handleError)
+    );
+  }
+
+  searchById(id: string): Observable<IHero[]> {
+    const url = this.baseHeroesUrl + id;
+
+    return this.http.get<any>(url).pipe(
+      retry(1),
+      map((apiResponse) => apiResponse),
       catchError(this.handleError)
     );
   }

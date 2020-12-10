@@ -5,7 +5,8 @@
                 <mat-icon>stars</mat-icon>
             </button>
         </div>
-        <mat-card-title>{{ hero.name }}</mat-card-title>
+        <mat-card-title [routerLink]="['/hero-info/', hero.id]" routerLinkActive="router-link-active">{{ hero.name }}
+        </mat-card-title>
         <mat-card-subtitle>Subtitle</mat-card-subtitle>
     </mat-card-header>
 
