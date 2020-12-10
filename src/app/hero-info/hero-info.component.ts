@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { IStats } from '../shared/interfaces/heroInterface';
+import { IHeroDetails, IStats } from '../shared/interfaces/heroInterface';
 import { HeroesService } from '../shared/services/heroes.service';
 
 @Component({
@@ -11,8 +11,7 @@ import { HeroesService } from '../shared/services/heroes.service';
   styleUrls: ['./hero-info.component.css'],
 })
 export class HeroInfoComponent implements OnInit {
-  id: string;
-  hero$;
+  hero$: Observable<IHeroDetails>;
 
   private readonly heroInfoSubscriptionDestroyed$: Subject<boolean> = new Subject<boolean>();
 

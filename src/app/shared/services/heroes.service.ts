@@ -1,7 +1,13 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { IAPIResults, IHero, IStats } from '../interfaces/heroInterface';
+import {
+  IAPIResults,
+  IHero,
+  IHeroDetails,
+  ISingleHeroAPIResponse,
+  IStats,
+} from '../interfaces/heroInterface';
 import { catchError, map, retry } from 'rxjs/operators';
 import AUTH_CONST from '../constants/authConstants';
 import { LocalStorageService } from './local-storage.service';
@@ -106,7 +112,9 @@ export class HeroesService {
     };
   }
 
-  private transformSingleHeroResponse(apiResponse: any): any {
+  private transformSingleHeroResponse(
+    apiResponse: ISingleHeroAPIResponse
+  ): IHeroDetails {
     return {
       id: apiResponse.id,
       name: apiResponse.name,
@@ -132,11 +140,11 @@ export class HeroesService {
     );
   }
 
-  searchById(id: string): Observable<IHero[]> {
+  searchById(id: string): Observable<IHeroDetails> {
     const url = this.baseHeroesUrl + id;
 
     return this.http
-      .get<any>(url)
+      .get<ISingleHeroAPIResponse>(url)
       .pipe(
         retry(1),
         map(this.transformSingleHeroResponse),
