@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-
 import { IHero } from 'src/app/shared/interfaces/heroInterface';
 import { HeroesService } from 'src/app/shared/services/heroes.service';
 
