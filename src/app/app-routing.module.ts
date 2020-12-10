@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './shared/guards/auth.guard';
+import { BattleGuard } from './shared/guards/battle.guard';
 
 const routes: Routes = [
   {
@@ -19,7 +20,7 @@ const routes: Routes = [
   },
   {
     path: 'battle',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, BattleGuard],
     loadChildren: () =>
       import('./battle-page/battle-page.module').then(
         (module) => module.BattlePageModule
