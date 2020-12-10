@@ -1,0 +1,24 @@
+mat-grid-tile {
+  background: lightblue;
+}
+::ng-deep mat-grid-tile.mat-grid-tile .mat-figure {
+  display: block !important;
+  position: absolute;
+}
+
+.buttons-container {
+  height: fit-content;
+  position: absolute;
+  left: 25%;
+  top: 25%;
+  width: 50%;
+  /* display: inline-grid;
+      width: 100%;
+      justify-content: center; */
+}
+
+.mat-raised-button {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+}

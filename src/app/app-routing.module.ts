@@ -18,6 +18,14 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'battle',
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('./battle-page/battle-page.module').then(
+        (module) => module.BattlePageModule
+      ),
+  },
+  {
     path: 'hero-info/:id',
     canActivate: [AuthGuard],
     loadChildren: () =>

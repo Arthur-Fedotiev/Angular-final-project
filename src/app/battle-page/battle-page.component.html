@@ -1,0 +1,18 @@
+<mat-grid-list cols="3" rows="4" rowHeight="3:1">
+  <mat-grid-tile [rowspan]="4">
+    <app-battle-card></app-battle-card>
+  </mat-grid-tile>
+  <mat-grid-tile [rowspan]="3">
+    <div class="buttons-container">
+      <button mat-raised-button color="warn">LIKE</button>
+      <button mat-raised-button color="warn">LIKE</button>
+      <button mat-raised-button color="warn">LIKE</button>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [rowspan]="4">
+    <app-battle-card></app-battle-card>
+  </mat-grid-tile>
+  <mat-grid-tile [rowspan]="1" [colspan]="1">
+    <app-powerups-list></app-powerups-list>
+  </mat-grid-tile>
+</mat-grid-list>
