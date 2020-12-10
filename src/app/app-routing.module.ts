@@ -4,6 +4,14 @@ import { AuthGuard } from './shared/guards/auth.guard';
 
 const routes: Routes = [
   {
+    path: 'hero-info/:id',
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('./hero-info/hero-info.module').then(
+        (module) => module.HeroInfoModule
+      ),
+  },
+  {
     path: 'heroes',
     canActivate: [AuthGuard],
     loadChildren: () =>
@@ -17,6 +25,7 @@ const routes: Routes = [
         (module) => module.UserPageModule
       ),
   },
+
   {
     path: 'login',
     loadChildren: () =>
