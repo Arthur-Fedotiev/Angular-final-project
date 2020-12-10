@@ -1,1 +1,41 @@
-<pre>{{ hero$ | async | json }}</pre>
+<div class="hero-info-page-container" *ngIf="(hero$ | async) || {} as hero">
+  <mat-grid-list cols="3" rows="1" gutterSize="10" rowHeight="1:1">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <img mat-card-image src="{{ hero.url }}" />
+    </mat-grid-tile>
+
+    <mat-grid-tile class="content-tile" [colspan]="2" [rowspan]="3">
+      <mat-card class="hero-card">
+        <mat-card-header>
+          <mat-card-title>{{ hero.name }}</mat-card-title>
+          <mat-card-subtitle>{{ hero.fullName }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <h2 matLine>{{ "Powerstats" | titlecase }}</h2>
+          <div
+            class="stats-container"
+            *ngFor="let stat of getPowerStats(hero.powerstats)"
+          >
+            <h3 matLine>{{ stat[0] | titlecase }}</h3>
+            <span> {{ stat[1] }} </span>
+          </div>
+          <h2 matLine>{{ "First appearance" | titlecase }}</h2>
+          <p>
+            {{ hero.firstAppeared }}
+          </p>
+          <h2 matLine>{{ "Characteristics" | titlecase }}</h2>
+          <p matLine>Gender:</p>
+          <span> {{ hero.gender }} </span>
+          <p matLine>Race:</p>
+          <span> {{ hero.race }} </span>
+          <p matLine>Height:</p>
+          <span> {{ hero.height }} </span>
+          <h2 matLine>{{ "Connections" | titlecase }}</h2>
+          <p matLine>{{ hero.belongesTo }}</p>
+          <h2 matLine>{{ "Relatives" | titlecase }}</h2>
+          <p matLine>{{ hero.relatives }}</p>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

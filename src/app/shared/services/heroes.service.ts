@@ -82,16 +82,6 @@ export class HeroesService {
     }
   }
 
-  private transformResponse(response: IAPIResults): IHero {
-    return {
-      id: response.id,
-      name: response.name,
-      powerstats: response.powerstats,
-      url: response.image.url,
-      selected: false,
-    };
-  }
-
   private getLastHeroOrNull(heroes: IHero[]): IHero | null {
     return heroes.length === 0 ? null : heroes[heroes.length - 1];
   }
@@ -106,12 +96,38 @@ export class HeroesService {
     return this.lastSelectedHero.id === id;
   }
 
+  private transformHeroesListResponse(response: IAPIResults): IHero {
+    return {
+      id: response.id,
+      name: response.name,
+      powerstats: response.powerstats,
+      url: response.image.url,
+      selected: false,
+    };
+  }
+
+  private transformSingleHeroResponse(apiResponse: any): any {
+    return {
+      id: apiResponse.id,
+      name: apiResponse.name,
+      powerstats: apiResponse.powerstats,
+      url: apiResponse.image.url,
+      fullName: apiResponse.biography['full-name'],
+      firstAppeared: apiResponse.biography['first-appearance'],
+      gender: apiResponse.appearance.gender,
+      height: apiResponse.appearance.height[1],
+      race: apiResponse.appearance.race,
+      belongesTo: apiResponse.connections['group-affiliation'],
+      relatives: apiResponse.connections.relatives,
+    };
+  }
+
   searchHeroes(query: string): Observable<IHero[]> {
     const url = this.baseHeroesUrl + 'search/' + query.trim();
 
     return this.http.get<Record<string, []>>(url).pipe(
       retry(1),
-      map(({ results }) => results.map(this.transformResponse)),
+      map(({ results }) => results.map(this.transformHeroesListResponse)),
       catchError(this.handleError)
     );
   }
@@ -119,11 +135,13 @@ export class HeroesService {
   searchById(id: string): Observable<IHero[]> {
     const url = this.baseHeroesUrl + id;
 
-    return this.http.get<any>(url).pipe(
-      retry(1),
-      map((apiResponse) => apiResponse),
-      catchError(this.handleError)
-    );
+    return this.http
+      .get<any>(url)
+      .pipe(
+        retry(1),
+        map(this.transformSingleHeroResponse),
+        catchError(this.handleError)
+      );
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { IStats } from '../shared/interfaces/heroInterface';
 import { HeroesService } from '../shared/services/heroes.service';
 
 @Component({
@@ -26,8 +27,12 @@ export class HeroInfoComponent implements OnInit {
       .subscribe((paramMap) => this.getHero(paramMap.get('id')));
   }
 
-  getHero(id: string) {
+  getHero(id: string): void {
     this.hero$ = this.heroesService.searchById(id);
+  }
+
+  getPowerStats(powerIStats: IStats): Array<[string, string]> {
+    return HeroesService.getIStats(powerIStats);
   }
 
   ngOnDestroy(): void {

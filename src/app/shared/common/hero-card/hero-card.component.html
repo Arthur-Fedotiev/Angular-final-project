@@ -31,8 +31,9 @@
     </mat-card-content>
     <mat-card-actions align="start">
         <div class="flex-spacer"></div>
-        <button id="handle-selected-heroes" mat-button color="primary" [disabled]="showDisabled(hero)"
+        <button id="handle-selected-heroes" mat-raised-button color="primary" [disabled]="showDisabled(hero)"
             (click)="clickHandler(hero)">{{ clickActionTitle | uppercase }}</button>
+        <!-- <button mat-raised-button color="primary">Primary</button> -->
     </mat-card-actions>
     <mat-card-footer> </mat-card-footer>
 </mat-card>
