@@ -1,0 +1,27 @@
+p {
+  font-family: Lato;
+}
+
+.powerup-card {
+  max-width: 300px;
+  margin: 4px;
+}
+
+.mat-card-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.powerup-header-image {
+  background-size: cover;
+}
+
+.mat-card {
+  margin: 2rem auto;
+}
+
+.mat-card-avatar {
+  margin-right: 0.5rem;
+  cursor: pointer;
+}

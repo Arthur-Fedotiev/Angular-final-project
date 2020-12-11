@@ -7,5 +7,5 @@ import { IStats } from '../../interfaces/heroInterface';
   styleUrls: ['./powerstats.component.css'],
 })
 export class PowerstatsComponent {
-  @Input() powerstats: IStats;
+  @Input() powerstats: { [key: string]: string };
 }

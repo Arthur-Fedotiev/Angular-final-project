@@ -1,0 +1,8 @@
+.mat-card-actions {
+  display: flex;
+  justify-content: space-around;
+}
+
+.powerup-header-image {
+  background-size: cover;
+}

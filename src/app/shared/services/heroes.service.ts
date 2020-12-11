@@ -10,6 +10,7 @@ import {
 } from '../interfaces/heroInterface';
 import { catchError, map, retry } from 'rxjs/operators';
 import AUTH_CONST from '../constants/authConstants';
+import PROVIDERS_CONST from '../constants/providersConstants';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
@@ -140,8 +141,10 @@ export class HeroesService {
     );
   }
 
-  searchById(id: string): Observable<IHeroDetails> {
-    const url = this.baseHeroesUrl + id;
+  searchById(id: string | void): Observable<IHeroDetails> {
+    const url = id
+      ? this.baseHeroesUrl + id
+      : this.baseHeroesUrl + this.getRandomId();
 
     return this.http
       .get<ISingleHeroAPIResponse>(url)
@@ -150,6 +153,14 @@ export class HeroesService {
         map(this.transformSingleHeroResponse),
         catchError(this.handleError)
       );
+  }
+
+  private getRandomId() {
+    return (
+      Math.floor(
+        Math.random() * (PROVIDERS_CONST.MAX_ID - PROVIDERS_CONST.MIN_ID + 1)
+      ) + PROVIDERS_CONST.MIN_ID
+    );
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {

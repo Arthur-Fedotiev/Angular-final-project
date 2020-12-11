@@ -21,6 +21,12 @@ export class UserRecordsService {
     return this.localStorageService.getItem(AUTH_CONST.BATTLE_HISTORY);
   }
 
+  usePowerUp(id: string): void {
+    const index = this.powerUps.findIndex((power) => power.id === id);
+    this.powerUps[index].usesLeft = this.powerUps[index].usesLeft - 1;
+    this.localStorageService.setItem(AUTH_CONST.POWERUPS, this.powerUps);
+  }
+
   getPowerUps(): IPowerUp[] {
     return this.powerUps;
   }

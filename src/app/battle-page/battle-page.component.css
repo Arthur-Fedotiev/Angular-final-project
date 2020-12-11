@@ -29,3 +29,7 @@ mat-grid-tile {
   width: 100%;
   margin-bottom: 1rem;
 }
+
+.no-powerups-message {
+  text-align: center;
+}

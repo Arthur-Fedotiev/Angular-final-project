@@ -1,1 +1,13 @@
-<p>powerups-list works!</p>
+<mat-card>
+  <mat-card-header class="powerup-card">
+    <button
+      mat-mini-fab
+      mat-card-avatar
+      *ngFor="let powerUp of availablePowerUps"
+      id="{{ powerUp.id }}"
+      class="powerup-header-image"
+      [ngStyle]="{ 'background-image': 'url(' + powerUp.url + ')' }"
+      (click)="usePowerUp(powerUp)"
+    ></button>
+  </mat-card-header>
+</mat-card>

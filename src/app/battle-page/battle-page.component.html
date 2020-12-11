@@ -1,18 +1,35 @@
-<mat-grid-list cols="3" rows="4" rowHeight="2:1">
+<mat-grid-list cols="3" rows="4" rowHeight="1.5:1">
   <mat-grid-tile [rowspan]="4">
-    <app-battle-card></app-battle-card>
+    <app-battle-card
+      [hero]="userHero"
+      [appliedPowerUps]="appliedPowerUps"
+    ></app-battle-card>
   </mat-grid-tile>
   <mat-grid-tile [rowspan]="3">
     <div class="buttons-container">
-      <button mat-raised-button color="warn">HERO NAME</button>
+      <button mat-stroked-button color="warn">{{ userHero.name }}</button>
       <button mat-raised-button color="warn">FIGHT</button>
-      <button mat-raised-button color="warn">OPPONENT NAME</button>
+      <button mat-stroked-button color="warn">
+        {{ (opponentHero$ | async).name || "Opponent hero" }}
+      </button>
     </div>
   </mat-grid-tile>
   <mat-grid-tile [rowspan]="4">
-    <app-battle-card></app-battle-card>
+    <app-battle-card
+      [hero]="opponentHero$ | async"
+      [appliedPowerUps]="[]"
+    ></app-battle-card>
   </mat-grid-tile>
   <mat-grid-tile [rowspan]="1" [colspan]="1">
-    <app-powerups-list></app-powerups-list>
+    <app-powerups-list
+      *ngIf="!!availablePowerUps.length; else noPowerUpsLeft"
+      (enhance)="enhanceHero($event)"
+      [availablePowerUps]="availablePowerUps"
+    ></app-powerups-list>
+    <ng-template #noPowerUpsLeft>
+      <div class="no-powerups-message">
+        <h2 matLine>You have no available powerups left!</h2>
+      </div>
+    </ng-template>
   </mat-grid-tile>
 </mat-grid-list>
