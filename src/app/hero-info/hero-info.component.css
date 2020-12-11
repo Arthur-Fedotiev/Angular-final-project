@@ -12,6 +12,7 @@
 ::ng-deep mat-grid-tile.mat-grid-tile .mat-figure {
   display: block !important;
 }
+
 p.mat-line {
   display: inline;
 }

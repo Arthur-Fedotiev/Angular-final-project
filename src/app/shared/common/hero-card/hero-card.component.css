@@ -1,3 +1,13 @@
+h2.mat-line {
+  font-size: 1rem;
+  margin: 0;
+}
+
+h3.mat-line {
+  margin: 0;
+  font-size: 0.75rem;
+}
+
 .mat-card {
   max-width: 100%;
   margin: auto;
@@ -17,14 +27,12 @@
 
 .mat-card-content {
   display: flex;
+  align-items: center;
 }
 .powerstats {
   flex-grow: 1;
 }
-.powerstats-wrapper {
-  display: flex;
-  justify-content: space-between;
-}
+
 .mat-line {
   text-align: center;
 }
@@ -36,4 +44,8 @@
 .favorite.is-favorite {
   fill: red;
   color: red;
+}
+
+button {
+  text-align: center;
 }

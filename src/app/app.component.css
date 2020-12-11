@@ -6,6 +6,10 @@
   right: 0;
 }
 
+.mat-toolbar-row {
+  justify-content: space-between;
+}
+
 .container .mat-drawer {
   padding-left: 20px;
   min-width: 200px;

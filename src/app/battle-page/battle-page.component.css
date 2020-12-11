@@ -2,16 +2,23 @@ mat-grid-tile {
   background: lightblue;
 }
 ::ng-deep mat-grid-tile.mat-grid-tile .mat-figure {
-  display: block !important;
+  /* display: block !important; */
   position: absolute;
+  align-items: center;
+}
+
+.mat-card {
+  height: 500px;
 }
 
 .buttons-container {
   height: fit-content;
-  position: absolute;
+  text-align: center;
+  /* position: absolute;
   left: 25%;
   top: 25%;
-  width: 50%;
+  width: 50%; */
+
   /* display: inline-grid;
       width: 100%;
       justify-content: center; */

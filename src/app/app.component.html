@@ -7,11 +7,21 @@
   <div class="sidenav-content">
     <mat-toolbar color="primary">
       <mat-toolbar-row>
-        <button mat-icon-button *ngIf="isActiveSession$ | async" (click)="drawer.toggle()">
-          <mat-icon class="">menu</mat-icon>
+        <div class="title-container">
+          <button
+            mat-icon-button
+            *ngIf="isActiveSession$ | async"
+            (click)="drawer.toggle()"
+          >
+            <mat-icon class="">menu</mat-icon>
+          </button>
+          <span>Title</span>
+        </div>
+        <button mat-raised-button color="warn" routerLink="/battle">
+          FIGHT!
         </button>
-        <span>Title</span>
-        <span class="spacer"></span>
+        <!-- <span class="spacer"></span> -->
+
         <div *ngIf="isActiveSession$ | async">
           <button mat-mini-fab routerLink="/user">
             <mat-icon>person</mat-icon>

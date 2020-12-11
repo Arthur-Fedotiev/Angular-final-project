@@ -6,6 +6,7 @@ import { BattlePageComponent } from './battle-page.component';
 import { BattleCardComponent } from './battle-card/battle-card.component';
 import { PowerupsListComponent } from './powerups-list/powerups-list.component';
 import { MaterialModule } from '../material.module';
+import { ReusedComponentsModule } from '../reused-components.module';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,11 @@ import { MaterialModule } from '../material.module';
     BattleCardComponent,
     PowerupsListComponent,
   ],
-  imports: [CommonModule, BattlePageRoutingModule, MaterialModule],
+  imports: [
+    CommonModule,
+    BattlePageRoutingModule,
+    MaterialModule,
+    ReusedComponentsModule,
+  ],
 })
 export class BattlePageModule {}
