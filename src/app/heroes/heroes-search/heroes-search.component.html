@@ -1,25 +1,45 @@
-<form [formGroup]="searchForm" class="search-form" (ngSubmit)="onSubmit(searchForm.value); heroNameSearch.value =''">
-    <mat-form-field class="search-full-width">
-        <mat-label>Find hero</mat-label>
-        <input #heroNameSearch matInput placeholder="Find Hero" formControlName="heroName" [value]="letter">
-        <button mat-icon-button matSuffix color="accent" [disabled]="!searchForm.valid">
-            <mat-icon>search</mat-icon>
-        </button>
-        <mat-error align="end" *ngIf="hasInvalidPattern()">
-            A valid hero name is required
-        </mat-error>
-    </mat-form-field>
+<form
+  [formGroup]="searchForm"
+  class="search-form"
+  (ngSubmit)="onSubmit(searchForm.value); heroNameSearch.value = ''"
+>
+  <mat-form-field class="search-full-width">
+    <mat-label>Find hero</mat-label>
+    <input
+      #heroNameSearch
+      matInput
+      placeholder="Find Hero"
+      formControlName="heroName"
+      [value]="letter"
+    />
+    <button
+      mat-icon-button
+      matSuffix
+      color="accent"
+      [disabled]="!searchForm.valid"
+    >
+      <mat-icon>search</mat-icon>
+    </button>
+    <mat-error align="end" *ngIf="hasInvalidPattern()">
+      A valid hero name is required
+    </mat-error>
+  </mat-form-field>
 </form>
 
 <mat-card>
-    <mat-card-header>
-        <mat-card-title>
-            Recent searches
-        </mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        <mat-list class="ss-container">
-            <mat-list-item *ngFor="let search of recentSearches">{{ search }}</mat-list-item>
-        </mat-list>
-    </mat-card-content>
+  <mat-card-header>
+    <mat-card-title> Recent searches </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-list class="ss-container">
+      <mat-list-item
+        appMaterialElevation
+        defaultElevation="0"
+        raisedElevation="16"
+        *ngFor="let search of recentSearches"
+        (click)="onClickSearch(search)"
+        >{{ search }}</mat-list-item
+      >
+    </mat-list>
+  </mat-card-content>
 </mat-card>

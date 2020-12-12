@@ -8,9 +8,15 @@ import { HeroesComponent } from './heroes.component';
 import { HeroesListComponent } from './heroes-list/heroes-list.component';
 import { HeroesSearchComponent } from './heroes-search/heroes-search.component';
 import { ReusedComponentsModule } from '../reused-components.module';
+import { MaterialElevationDirective } from '../shared/directives/material-elevation.directive.directive';
 
 @NgModule({
-  declarations: [HeroesComponent, HeroesListComponent, HeroesSearchComponent],
+  declarations: [
+    HeroesComponent,
+    HeroesListComponent,
+    HeroesSearchComponent,
+    MaterialElevationDirective,
+  ],
   imports: [
     CommonModule,
     HeroesRoutingModule,

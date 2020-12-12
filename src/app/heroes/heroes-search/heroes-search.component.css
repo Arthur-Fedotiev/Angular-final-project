@@ -24,3 +24,11 @@
   background-color: darkgrey;
   outline: 1px solid slategrey;
 }
+
+.mat-list-item {
+  cursor: pointer;
+}
+
+/* :hover.mat-list-item {
+  background-color: burlywood;
+} */

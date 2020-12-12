@@ -36,6 +36,10 @@ export class HeroesSearchComponent implements OnInit {
     });
   }
 
+  onClickSearch(heroSearch: string): void {
+    this.searchHero.emit(heroSearch);
+  }
+
   onSubmit(heroSearch: HeroSearch): void {
     this.searchHero.emit(heroSearch.heroName);
   }
