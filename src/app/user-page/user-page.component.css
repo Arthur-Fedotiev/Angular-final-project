@@ -7,3 +7,22 @@
   bottom: 0;
   right: 5px;
 }
+
+.mat-card.no-selected-heroes {
+  width: 75%;
+  margin: 3rem auto;
+}
+
+.mat-card-header {
+  justify-content: center;
+}
+
+.mat-card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+h3.mat-line {
+  margin-top: 1rem;
+}

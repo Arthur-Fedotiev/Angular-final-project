@@ -17,7 +17,12 @@
           </button>
           <span>Title</span>
         </div>
-        <button mat-raised-button color="warn" routerLink="/battle">
+        <button
+          mat-raised-button
+          color="warn"
+          routerLink="/battle"
+          *ngIf="isActiveSession$ | async"
+        >
           FIGHT!
         </button>
         <!-- <span class="spacer"></span> -->
