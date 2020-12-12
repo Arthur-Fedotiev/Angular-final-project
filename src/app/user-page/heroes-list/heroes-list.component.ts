@@ -22,4 +22,9 @@ export class HeroesListComponent implements OnInit {
     this.heroService.removeFromSelected(hero.id);
     this.lastSelectedHero = this.heroService.getLastSelectedHero();
   }
+
+  setNewLastSelectedHero(reselectedHero: IHero): void {
+    this.heroService.setNewLastSelectedHero(reselectedHero);
+    this.lastSelectedHero = this.heroService.getLastSelectedHero();
+  }
 }

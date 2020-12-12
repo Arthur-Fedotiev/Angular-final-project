@@ -1,4 +1,15 @@
-import { IBattleRecord, IPowerUp } from '../interfaces/userDataInterfaces';
+import { IStats } from '../interfaces/heroInterface';
+import { IPowerUp } from '../interfaces/userDataInterfaces';
+import randomNumber from './randomNumber';
+
+export const mockedStats: IStats = {
+  intelligence: randomNumber(1, 100).toString(),
+  strength: randomNumber(1, 100).toString(),
+  speed: randomNumber(1, 100).toString(),
+  durability: randomNumber(1, 100).toString(),
+  power: randomNumber(1, 100).toString(),
+  combat: randomNumber(1, 100).toString(),
+};
 
 export const powerUps: IPowerUp[] = [
   {
@@ -42,62 +53,5 @@ export const powerUps: IPowerUp[] = [
     url: 'https://avatarfiles.alphacoders.com/923/92354.png',
     description: 'Speed +10',
     usesLeft: 5,
-  },
-];
-
-export const battleHistory: IBattleRecord[] = [
-  {
-    date: Date.now(),
-    heroName: 'lol',
-    opponentName: 'Superman',
-    result: 'defeat',
-  },
-  {
-    date: Date.now(),
-    heroName: 'john',
-    opponentName: 'Superman',
-    result: 'defeat',
-  },
-  {
-    date: Date.now(),
-    heroName: 'Batdfdfman',
-    opponentName: 'Superman',
-    result: 'defeat',
-  },
-  {
-    date: Date.now(),
-    heroName: 'uuu',
-    opponentName: 'Superman',
-    result: 'defeat',
-  },
-  {
-    date: Date.now(),
-    heroName: 'aa',
-    opponentName: 'Superman',
-    result: 'defeat',
-  },
-  {
-    date: Date.now(),
-    heroName: 'Batman',
-    opponentName: 'Superman',
-    result: 'defeat',
-  },
-  {
-    date: Date.now(),
-    heroName: 'lol',
-    opponentName: 'Superman',
-    result: 'defeat',
-  },
-  {
-    date: Date.now(),
-    heroName: 'sdsd',
-    opponentName: 'Superman',
-    result: 'defeat',
-  },
-  {
-    date: Date.now(),
-    heroName: 'uncle sam',
-    opponentName: 'Superman',
-    result: 'defeat',
   },
 ];

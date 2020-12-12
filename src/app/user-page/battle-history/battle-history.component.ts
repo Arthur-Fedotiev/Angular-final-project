@@ -16,13 +16,13 @@ export class BattleHistoryComponent implements OnInit {
 
   constructor(private userRecordsService: UserRecordsService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.dataSource = new MatTableDataSource(
       this.userRecordsService.getBattleHistory()
     );
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
   }
 }

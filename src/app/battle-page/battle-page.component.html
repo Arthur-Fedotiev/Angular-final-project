@@ -1,4 +1,9 @@
-<mat-grid-list cols="3" rows="4" rowHeight="1.5:1">
+<mat-grid-list
+  *ngIf="!battleLoader; else battleSpinner"
+  cols="3"
+  rows="4"
+  rowHeight="1.5:1"
+>
   <mat-grid-tile [rowspan]="4">
     <app-battle-card
       [hero]="userHero"
@@ -7,18 +12,26 @@
   </mat-grid-tile>
   <mat-grid-tile [rowspan]="3">
     <div class="buttons-container">
-      <button mat-stroked-button color="warn">{{ userHero.name }}</button>
-      <button mat-raised-button color="warn">FIGHT</button>
-      <button mat-stroked-button color="warn">
-        {{ (opponentHero$ | async).name || "Opponent hero" }}
+      <button mat-button color="warn">
+        <h2 matLine>{{ userHero?.name }}</h2>
+      </button>
+      <button mat-raised-button color="warn" (click)="getWinner()">
+        <h1 matLine>FIGHT</h1>
+      </button>
+      <button mat-button color="warn">
+        <h2 matLine>{{ opponentHero?.name }}</h2>
       </button>
     </div>
   </mat-grid-tile>
   <mat-grid-tile [rowspan]="4">
     <app-battle-card
-      [hero]="opponentHero$ | async"
+      *ngIf="opponentHero; else spinner"
+      [hero]="opponentHero"
       [appliedPowerUps]="[]"
     ></app-battle-card>
+    <ng-template #spinner>
+      <mat-spinner></mat-spinner>
+    </ng-template>
   </mat-grid-tile>
   <mat-grid-tile [rowspan]="1" [colspan]="1">
     <app-powerups-list
@@ -33,3 +46,6 @@
     </ng-template>
   </mat-grid-tile>
 </mat-grid-list>
+<ng-template #battleSpinner>
+  <mat-spinner></mat-spinner>
+</ng-template>

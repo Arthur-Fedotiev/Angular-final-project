@@ -22,6 +22,16 @@
   <mat-card-actions align="start">
     <div class="flex-spacer"></div>
     <button
+      mat-raised-button
+      id="re-selector"
+      *ngIf="list === 'Selected'"
+      color="accent"
+      [disabled]="isLastSelected(hero.id)"
+      (click)="reselectHero(hero)"
+    >
+      {{ "Select" | uppercase }}
+    </button>
+    <button
       id="handle-selected-heroes"
       mat-raised-button
       color="primary"

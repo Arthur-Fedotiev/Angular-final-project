@@ -12,6 +12,7 @@ import { catchError, map, retry } from 'rxjs/operators';
 import AUTH_CONST from '../constants/authConstants';
 import PROVIDERS_CONST from '../constants/providersConstants';
 import { LocalStorageService } from './local-storage.service';
+import randomNumber from '../utils/randomNumber';
 
 @Injectable({
   providedIn: 'root',
@@ -75,6 +76,10 @@ export class HeroesService {
     );
   }
 
+  setNewLastSelectedHero(reselectedHero: IHero): void {
+    this.lastSelectedHero = { ...reselectedHero };
+  }
+
   removeFromSelected(id: string): void {
     const index = this.selectedHeroes.findIndex((hero) => hero.id === id);
 
@@ -103,23 +108,33 @@ export class HeroesService {
     return this.lastSelectedHero.id === id;
   }
 
-  private transformHeroesListResponse(response: IAPIResults): IHero {
+  private getProperPowerstats(powerStats: IStats): IStats {
+    Object.keys(powerStats).map((stat) => {
+      if (powerStats[stat] === 'null') {
+        powerStats[stat] = randomNumber(1, 100).toString();
+      }
+    });
+
+    return powerStats;
+  }
+
+  private transformHeroesListResponse = (response: IAPIResults): IHero => {
     return {
       id: response.id,
       name: response.name,
-      powerstats: response.powerstats,
+      powerstats: this.getProperPowerstats(response.powerstats),
       url: response.image.url,
       selected: false,
     };
-  }
+  };
 
-  private transformSingleHeroResponse(
+  private transformSingleHeroResponse = (
     apiResponse: ISingleHeroAPIResponse
-  ): IHeroDetails {
+  ): IHeroDetails => {
     return {
       id: apiResponse.id,
       name: apiResponse.name,
-      powerstats: apiResponse.powerstats,
+      powerstats: this.getProperPowerstats(apiResponse.powerstats),
       url: apiResponse.image.url,
       fullName: apiResponse.biography['full-name'],
       firstAppeared: apiResponse.biography['first-appearance'],
@@ -129,7 +144,7 @@ export class HeroesService {
       belongesTo: apiResponse.connections['group-affiliation'],
       relatives: apiResponse.connections.relatives,
     };
-  }
+  };
 
   searchHeroes(query: string): Observable<IHero[]> {
     const url = this.baseHeroesUrl + 'search/' + query.trim();
@@ -144,7 +159,8 @@ export class HeroesService {
   searchById(id: string | void): Observable<IHeroDetails> {
     const url = id
       ? this.baseHeroesUrl + id
-      : this.baseHeroesUrl + this.getRandomId();
+      : this.baseHeroesUrl +
+        randomNumber(PROVIDERS_CONST.MIN_ID, PROVIDERS_CONST.MAX_ID);
 
     return this.http
       .get<ISingleHeroAPIResponse>(url)
@@ -153,14 +169,6 @@ export class HeroesService {
         map(this.transformSingleHeroResponse),
         catchError(this.handleError)
       );
-  }
-
-  private getRandomId() {
-    return (
-      Math.floor(
-        Math.random() * (PROVIDERS_CONST.MAX_ID - PROVIDERS_CONST.MIN_ID + 1)
-      ) + PROVIDERS_CONST.MIN_ID
-    );
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {

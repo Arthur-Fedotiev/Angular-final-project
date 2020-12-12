@@ -19,6 +19,7 @@ h3.mat-line {
 
 .mat-card-actions {
   display: flex;
+  justify-content: flex-end;
 }
 
 .mat-card-actions .flex-spacer {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import AUTH_CONST from '../constants/authConstants';
-import { battleHistory, powerUps } from '../utils/mockData';
+import { powerUps } from '../utils/mockData';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +27,7 @@ export class LocalStorageService {
   initializeLocalStorage(): void {
     this.setItem(AUTH_CONST.QUERIES, []);
     this.setItem(AUTH_CONST.SELECTED_HEROES, []);
-    this.setItem(AUTH_CONST.BATTLE_HISTORY, battleHistory);
+    this.setItem(AUTH_CONST.BATTLE_HISTORY, []);
     this.setItem(AUTH_CONST.POWERUPS, powerUps);
   }
 

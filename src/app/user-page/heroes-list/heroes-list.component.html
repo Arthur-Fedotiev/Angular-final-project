@@ -1,5 +1,12 @@
 <mat-list>
-    <app-hero-card *ngFor="let hero of heroes" [hero]="hero" [clickActionTitle]="'REMOVE'"
-        [clickHandler]="removeFromSelected.bind(this)" [lastSelectedHero]="lastSelectedHero">
-    </app-hero-card>
+  <app-hero-card
+    *ngFor="let hero of heroes"
+    [hero]="hero"
+    [clickActionTitle]="'REMOVE'"
+    [lastSelectedHero]="lastSelectedHero"
+    [list]="'Selected'"
+    [clickHandler]="removeFromSelected.bind(this)"
+    (setNewLastSelectedHero)="setNewLastSelectedHero($event)"
+  >
+  </app-hero-card>
 </mat-list>

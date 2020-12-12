@@ -11,4 +11,6 @@ export interface IBattleRecord {
   heroName: string;
   opponentName: string;
   result: string;
+  heroId: string;
+  opponentId: string;
 }
