@@ -1,4 +1,51 @@
 .battle-history-container {
   overflow: auto;
   height: 400px;
+  font-family: "Bangers", cursive;
+}
+
+th {
+  font-size: 1.5rem;
+}
+td {
+  font-family: "Bangers", cursive;
+
+  font-size: 1rem;
+}
+td.opponent-name {
+  color: orangered;
+  cursor: pointer;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+td.opponent-name:hover {
+  text-decoration: underline;
+}
+
+td.opponent-name:active {
+  color: black;
+}
+
+td.opponent-name:visited {
+  color: purple;
+}
+
+td.hero-name {
+  color: green;
+  cursor: pointer;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+td.hero-name:hover {
+  text-decoration: underline;
+}
+
+td.hero-name:active {
+  color: black;
+}
+
+td.hero-name:visited {
+  color: purple;
 }

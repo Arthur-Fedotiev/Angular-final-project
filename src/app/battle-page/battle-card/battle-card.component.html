@@ -1,10 +1,18 @@
 <mat-card class="example-card mat-elevation-z8">
   <mat-card-header>
-    <mat-card-title> {{ hero?.name }} </mat-card-title>
+    <mat-card-title class="title"> {{ hero?.name }} </mat-card-title>
   </mat-card-header>
-  <img mat-card-image src="{{ hero?.url }}" alt="Superhero avatar" />
+  <img
+    mat-card-image
+    src="{{ hero?.url }}"
+    onerror="this.src='assets/images/hero-fallback-img.png'"
+    alt="Superhero avatar"
+  />
   <mat-card-content>
-    <app-powerstats [powerstats]="hero?.powerstats"></app-powerstats>
+    <app-powerstats
+      [enhanced]="enhanced"
+      [powerstats]="hero?.powerstats"
+    ></app-powerstats>
   </mat-card-content>
   <mat-card-actions *ngIf="!!appliedPowerUps.length">
     <button

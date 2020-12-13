@@ -8,7 +8,7 @@ import {
   ISingleHeroAPIResponse,
   IStats,
 } from '../interfaces/heroInterface';
-import { catchError, map, retry } from 'rxjs/operators';
+import { catchError, map, retry, timeout } from 'rxjs/operators';
 import AUTH_CONST from '../constants/authConstants';
 import PROVIDERS_CONST from '../constants/providersConstants';
 import { LocalStorageService } from './local-storage.service';
@@ -146,10 +146,11 @@ export class HeroesService {
     };
   };
 
-  searchHeroes(query: string): Observable<IHero[]> {
+  searchHeroes(query: string, waitForResponse: number): Observable<IHero[]> {
     const url = this.baseHeroesUrl + 'search/' + query.trim();
 
     return this.http.get<Record<string, []>>(url).pipe(
+      timeout(waitForResponse),
       retry(1),
       map(({ results }) => results.map(this.transformHeroesListResponse)),
       catchError(this.handleError)

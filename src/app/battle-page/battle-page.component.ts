@@ -13,8 +13,10 @@ import {
   IPowerUp,
 } from '../shared/interfaces/userDataInterfaces';
 import { HeroesService } from '../shared/services/heroes.service';
+import { NotificationService } from '../shared/services/notification.service';
 import { UserRecordsService } from '../shared/services/user-records.service';
 import { BattleModalComponent } from './battle-modal/battle-modal.component';
+import NOTIFY from '../shared/constants/notifications';
 
 @Component({
   selector: 'app-battle-page',
@@ -26,6 +28,7 @@ export class BattlePageComponent implements OnInit {
   opponentHero: IHeroDetails;
   availablePowerUps: IPowerUp[];
   appliedPowerUps: IPowerUp[];
+  enhanced: string[];
   enhancement: number = 0;
   battleLoader: boolean = false;
 
@@ -34,6 +37,7 @@ export class BattlePageComponent implements OnInit {
   constructor(
     private heroesService: HeroesService,
     private userRecordsService: UserRecordsService,
+    private notificationService: NotificationService,
     private modal: MatDialog,
     private router: Router
   ) {}
@@ -43,15 +47,19 @@ export class BattlePageComponent implements OnInit {
     this.getOpponentsHero();
     this.getAvailablePowerUps();
     this.appliedPowerUps = [];
+    this.enhanced = [];
   }
 
   getOpponentsHero(): void {
     this.heroesService
       .searchById()
       .pipe(takeUntil(this.battlePageSubscriptionDestroyed$))
-      .subscribe((APIresponse: IHeroDetails) => {
-        this.opponentHero = APIresponse;
-      });
+      .subscribe(
+        (APIresponse: IHeroDetails) => {
+          this.opponentHero = APIresponse;
+        },
+        () => this.notificationService.notify(NOTIFY.BAD_RESPONSE)
+      );
   }
 
   getAvailablePowerUps(): void {
@@ -61,11 +69,14 @@ export class BattlePageComponent implements OnInit {
   }
 
   enhanceHero(powerUp: IPowerUp): void {
+    console.log(this.enhanced);
+
     const index = this.availablePowerUps.findIndex(
       ({ id }) => id === powerUp.id
     );
 
     this.enhancement = this.enhancement + 10;
+    this.enhanced.push(powerUp.id);
     this.availablePowerUps.splice(index, 1);
     this.appliedPowerUps.push(powerUp);
     this.userRecordsService.usePowerUp(powerUp.id);
@@ -96,7 +107,7 @@ export class BattlePageComponent implements OnInit {
     setTimeout(() => {
       this.battleLoader = false;
       this.openBattleModal(result);
-    }, 1000);
+    }, 4000);
   }
 
   isApplied(id: string): boolean {
@@ -114,7 +125,7 @@ export class BattlePageComponent implements OnInit {
       .pipe(takeUntil(this.battlePageSubscriptionDestroyed$))
       .subscribe((action) => {
         action === 'back'
-          ? this.router.navigateByUrl('/heroes')
+          ? this.router.navigateByUrl('/user')
           : this.ngOnInit();
       });
   }

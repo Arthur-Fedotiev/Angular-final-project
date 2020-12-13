@@ -4,6 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import { IHero } from '../shared/interfaces/heroInterface';
 import { HeroesService } from '../shared/services/heroes.service';
 import { NotificationService } from '../shared/services/notification.service';
+import TIME_CONST from '../shared/constants/providersConstants';
 
 @Component({
   selector: 'app-heroes',
@@ -30,13 +31,16 @@ export class HeroesComponent implements OnInit {
 
   searchByletter(searchLetter: string): void {
     this.searchLetter = searchLetter;
-    this.searchHero(searchLetter);
+    this.searchHero(searchLetter, TIME_CONST.WAIT_FOR_LETTER_QUERY);
   }
 
-  searchHero(heroName: string): void {
+  searchHero(
+    heroName: string,
+    waitForResponse: number = TIME_CONST.WAIT_FOR_NAME_QUERY
+  ): void {
     this.loading = true;
     this.heroesService
-      .searchHeroes(heroName)
+      .searchHeroes(heroName, waitForResponse)
       .pipe(takeUntil(this.heroesSubscriptionDestroyed$))
       .subscribe(
         (heroes) => {

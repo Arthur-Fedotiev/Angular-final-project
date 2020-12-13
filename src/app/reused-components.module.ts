@@ -6,6 +6,7 @@ import { AlphabeticalSearchComponent } from './shared/common/alphabetical-search
 import { alphabet, alphabetToken } from './shared/providers';
 import { RouterModule } from '@angular/router';
 import { PowerstatsComponent } from './shared/common/powerstats/powerstats.component';
+import { OverlaySpinnerComponent } from './shared/common/overlay-spinner/overlay-spinner.component';
 
 @NgModule({
   imports: [CommonModule, MaterialModule, RouterModule],
@@ -13,11 +14,13 @@ import { PowerstatsComponent } from './shared/common/powerstats/powerstats.compo
     HeroCardComponent,
     AlphabeticalSearchComponent,
     PowerstatsComponent,
+    OverlaySpinnerComponent,
   ],
   exports: [
     HeroCardComponent,
     AlphabeticalSearchComponent,
     PowerstatsComponent,
+    OverlaySpinnerComponent,
   ],
   providers: [{ provide: alphabetToken, useValue: alphabet }],
 })

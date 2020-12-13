@@ -7,10 +7,8 @@ import { IPowerUp } from 'src/app/shared/interfaces/userDataInterfaces';
   templateUrl: './battle-card.component.html',
   styleUrls: ['./battle-card.component.css'],
 })
-export class BattleCardComponent implements OnInit {
+export class BattleCardComponent {
   @Input() hero: IHero | IHeroDetails;
   @Input() appliedPowerUps: IPowerUp[];
-  constructor() {}
-
-  ngOnInit(): void {}
+  @Input() enhanced: string[];
 }

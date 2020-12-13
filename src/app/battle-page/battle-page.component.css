@@ -1,5 +1,5 @@
 mat-grid-tile {
-  background: lightblue;
+  background: lightgoldenrodyellow;
 }
 ::ng-deep mat-grid-tile.mat-grid-tile .mat-figure {
   /* display: block !important; */
@@ -7,8 +7,21 @@ mat-grid-tile {
   align-items: center;
 }
 
+.user-hero-name {
+  color: green;
+}
+
 h1.mat-line {
   margin: 1rem auto;
+  font-family: "Bangers", cursive;
+  font-size: 2rem;
+}
+
+h2.mat-line {
+  margin: 1rem auto;
+  font-family: "Bangers", cursive;
+  font-size: 3rem;
+  line-height: 3rem;
 }
 
 .mat-card {
@@ -36,8 +49,4 @@ h1.mat-line {
 
 .no-powerups-message {
   text-align: center;
-}
-
-.mat-spinner {
-  margin: 5rem auto;
 }

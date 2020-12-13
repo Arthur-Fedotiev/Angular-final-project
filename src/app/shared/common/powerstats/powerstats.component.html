@@ -6,6 +6,9 @@
       <h3 matLine>
         {{ stat.key | titlecase }}
       </h3>
+      <div class="buffes" *ngIf="isEnhanced(stat.key)">
+        <button mat-mini-fab>+10</button>
+      </div>
       <p matLine>{{ stat.value }}</p>
     </div>
   </div>

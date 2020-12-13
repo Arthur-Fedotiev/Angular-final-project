@@ -3,4 +3,6 @@ export default {
   TO_CHAR_CODE_NUMBER: 97,
   MIN_ID: 1,
   MAX_ID: 732,
+  WAIT_FOR_LETTER_QUERY: 5000,
+  WAIT_FOR_NAME_QUERY: 3000,
 };

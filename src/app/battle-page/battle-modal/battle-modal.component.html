@@ -1,9 +1,19 @@
-<h1 mat-dialog-title>{{ data.result }}</h1>
+<h1 mat-dialog-title matLine>{{ data.result | titlecase }}</h1>
 <div mat-dialog-actions>
-  <button id="1" mat-fab color="accent" [mat-dialog-close]="'back'">
-    <mat-icon>arrow_back</mat-icon>
+  <button
+    id="selectBtn"
+    mat-raised-button
+    color="primary"
+    [mat-dialog-close]="'back'"
+  >
+    {{ "select another hero" | titlecase }}
   </button>
-  <button id="2" mat-raised-button color="warn" [mat-dialog-close]="'fight'">
-    FIGHT AGAIN
+  <button
+    id="fightBtn"
+    mat-raised-button
+    color="warn"
+    [mat-dialog-close]="'fight'"
+  >
+    {{ "fight again" | titlecase }}
   </button>
 </div>

@@ -1,6 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IStats } from '../../interfaces/heroInterface';
-
 @Component({
   selector: 'app-powerstats',
   templateUrl: './powerstats.component.html',
@@ -8,4 +6,9 @@ import { IStats } from '../../interfaces/heroInterface';
 })
 export class PowerstatsComponent {
   @Input() powerstats: { [key: string]: string };
+  @Input() enhanced: string[];
+
+  isEnhanced(key: string): boolean {
+    return !!this.enhanced && this.enhanced.includes(key);
+  }
 }

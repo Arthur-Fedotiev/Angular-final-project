@@ -8,14 +8,20 @@
     <app-battle-card
       [hero]="userHero"
       [appliedPowerUps]="appliedPowerUps"
+      [enhanced]="enhanced"
     ></app-battle-card>
   </mat-grid-tile>
   <mat-grid-tile [rowspan]="3">
     <div class="buttons-container">
-      <button mat-button color="warn">
+      <button mat-button class="user-hero-name">
         <h2 matLine>{{ userHero?.name }}</h2>
       </button>
-      <button mat-raised-button color="warn" (click)="getWinner()">
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="getWinner()"
+        [disabled]="!opponentHero"
+      >
         <h1 matLine>FIGHT</h1>
       </button>
       <button mat-button color="warn">
@@ -47,5 +53,5 @@
   </mat-grid-tile>
 </mat-grid-list>
 <ng-template #battleSpinner>
-  <mat-spinner></mat-spinner>
+  <app-overlay-spinner overlay="true"></app-overlay-spinner>
 </ng-template>

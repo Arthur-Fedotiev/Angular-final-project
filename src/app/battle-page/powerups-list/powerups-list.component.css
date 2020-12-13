@@ -1,6 +1,4 @@
-p {
-  font-family: Lato;
-}
+@import "@angular/material/prebuilt-themes/purple-green.css";
 
 .powerup-card {
   max-width: 300px;
@@ -19,6 +17,7 @@ p {
 
 .mat-card {
   margin: 2rem auto;
+  background: lightgoldenrodyellow;
 }
 
 .mat-card-avatar {

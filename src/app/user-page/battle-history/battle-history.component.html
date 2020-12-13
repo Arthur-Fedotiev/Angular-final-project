@@ -12,6 +12,7 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Hero Name</th>
       <td
         mat-cell
+        class="hero-name"
         *matCellDef="let battleRecord"
         [routerLink]="['/hero-info/', battleRecord.heroId]"
         routerLinkActive="router-link-active"
@@ -25,6 +26,8 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Opponent Name</th>
       <td
         mat-cell
+        class="opponent-name"
+        color="warn"
         *matCellDef="let battleRecord"
         [routerLink]="['/hero-info/', battleRecord.opponentId]"
         routerLinkActive="router-link-active"

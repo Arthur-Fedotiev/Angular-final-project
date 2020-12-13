@@ -1,6 +1,6 @@
 <form
-  [formGroup]="searchForm"
   class="search-form"
+  [formGroup]="searchForm"
   (ngSubmit)="onSubmit(searchForm.value); heroNameSearch.value = ''"
 >
   <mat-form-field class="search-full-width">
