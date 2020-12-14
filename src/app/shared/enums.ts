@@ -3,3 +3,8 @@ export enum Form {
   Signup = 'Signup',
   Cancel = 'Cancel',
 }
+
+export enum BattleResults {
+  Win = 'Victory',
+  Loose = 'Defeat',
+}

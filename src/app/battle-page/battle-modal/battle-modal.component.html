@@ -1,16 +1,16 @@
 <h1 mat-dialog-title matLine>{{ data.result | titlecase }}</h1>
 <div mat-dialog-actions>
   <button
-    id="selectBtn"
     mat-raised-button
+    id="selectBtn"
     color="primary"
     [mat-dialog-close]="'back'"
   >
     {{ "select another hero" | titlecase }}
   </button>
   <button
-    id="fightBtn"
     mat-raised-button
+    id="fightBtn"
     color="warn"
     [mat-dialog-close]="'fight'"
   >

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { delay, take, takeUntil } from 'rxjs/operators';
@@ -17,6 +17,8 @@ import { NotificationService } from '../shared/services/notification.service';
 import { UserRecordsService } from '../shared/services/user-records.service';
 import { BattleModalComponent } from './battle-modal/battle-modal.component';
 import NOTIFY from '../shared/constants/notifications';
+import { BattleResults } from '../shared/enums';
+import { IResultsOfBattle } from '../shared/interfaces/battleInterfaces';
 
 @Component({
   selector: 'app-battle-page',
@@ -35,6 +37,13 @@ export class BattlePageComponent implements OnInit {
   enhancement: number = 0;
 
   private readonly battlePageSubscriptionDestroyed$: Subject<boolean> = new Subject<boolean>();
+  private getInitialState(): void {
+    this.userHero = this.heroesService.getLastSelectedHero();
+    this.getOpponentsHero();
+    this.getAvailablePowerUps();
+    this.appliedPowerUps = [];
+    this.enhanced = [];
+  }
 
   constructor(
     private heroesService: HeroesService,
@@ -45,14 +54,10 @@ export class BattlePageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.userHero = this.heroesService.getLastSelectedHero();
-    this.getOpponentsHero();
-    this.getAvailablePowerUps();
-    this.appliedPowerUps = [];
-    this.enhanced = [];
+    this.getInitialState();
   }
 
-  getOpponentsHero(): void {
+  private getOpponentsHero(): void {
     this.heroesService
       .searchById()
       .pipe(takeUntil(this.battlePageSubscriptionDestroyed$))
@@ -64,62 +69,47 @@ export class BattlePageComponent implements OnInit {
       );
   }
 
-  getAvailablePowerUps(): void {
+  private getAvailablePowerUps(): void {
     this.availablePowerUps = this.userRecordsService.powerUps.filter(
       (power) => power.usesLeft !== 0
     );
   }
 
-  enhanceHero(powerUp: IPowerUp): void {
-    const index = this.availablePowerUps.findIndex(
-      ({ id }) => id === powerUp.id
-    );
-
-    this.enhancement = this.enhancement + 10;
-    this.enhanced.push(powerUp.id);
-    this.availablePowerUps.splice(index, 1);
-    this.appliedPowerUps.push(powerUp);
-    this.userRecordsService.usePowerUp(powerUp.id);
-  }
-
-  getStats(powerStats: IStats): number {
+  private getStats(powerStats: IStats): number {
     return Object.keys(powerStats).reduce((acc, stat) => {
       return acc + +powerStats[stat];
     }, 0);
   }
 
-  getWinner(): void {
-    this.simulateBattle$.next(true);
-
-    const userStats =
-      this.getStats(this.userHero.powerstats) + this.enhancement;
-    const opponentStats = this.getStats(this.opponentHero.powerstats);
-    const result = userStats > opponentStats ? 'Victory' : 'Defeat';
+  private saveNewBattleRecord({
+    userHero,
+    opponentHero,
+    result,
+  }: IResultsOfBattle): void {
     const newBattleRecord: IBattleRecord = {
       date: Date.now(),
-      heroName: this.userHero.name,
-      heroId: this.userHero.id,
-      opponentName: this.opponentHero.name,
-      opponentId: this.opponentHero.id,
+      heroName: userHero.name,
+      heroId: userHero.id,
+      opponentName: opponentHero.name,
+      opponentId: opponentHero.id,
       result: result,
     };
+
     this.userRecordsService.addNewBattleRecord(newBattleRecord);
-    this.simulateBattle.pipe(delay(4000), take(1)).subscribe(() => {
-      this.openBattleModal(result);
-      this.simulateBattle$.next(false);
-    });
+  }
+  private getResultsOfFight(): string {
+    const userStats: number =
+      this.getStats(this.userHero.powerstats) + this.enhancement;
+    const opponentStats: number = this.getStats(this.opponentHero.powerstats);
+
+    return userStats > opponentStats ? BattleResults.Win : BattleResults.Loose;
   }
 
-  fightIsUnderway() {
-    this.simulateBattle.subscribe();
-  }
-
-  isApplied(id: string): boolean {
-    return !!this.appliedPowerUps.find((power) => power.id === id);
-  }
-
-  openBattleModal(result: string): void {
-    const modalRef = this.modal.open(BattleModalComponent, {
+  private openBattleModal(result: string): void {
+    const modalRef: MatDialogRef<
+      BattleModalComponent,
+      string
+    > = this.modal.open(BattleModalComponent, {
       width: '400px',
       data: { result },
     });
@@ -132,6 +122,39 @@ export class BattlePageComponent implements OnInit {
           ? this.router.navigateByUrl('/user')
           : this.ngOnInit();
       });
+  }
+
+  enhanceHero(powerUp: IPowerUp): void {
+    const index: number = this.availablePowerUps.findIndex(
+      ({ id }) => id === powerUp.id
+    );
+
+    this.enhancement = this.enhancement + 10;
+    this.enhanced.push(powerUp.id);
+    this.availablePowerUps.splice(index, 1);
+    this.appliedPowerUps.push(powerUp);
+    this.userRecordsService.usePowerUp(powerUp.id);
+  }
+
+  getWinner(): void {
+    this.simulateBattle$.next(true);
+
+    const result: string = this.getResultsOfFight();
+    const dataForNewRecord: IResultsOfBattle = {
+      userHero: this.userHero,
+      opponentHero: this.opponentHero,
+      result,
+    };
+
+    this.saveNewBattleRecord(dataForNewRecord);
+    this.simulateBattle.pipe(delay(4000), take(1)).subscribe(() => {
+      this.openBattleModal(result);
+      this.simulateBattle$.next(false);
+    });
+  }
+
+  isApplied(id: string): boolean {
+    return !!this.appliedPowerUps.find((power) => power.id === id);
   }
 
   ngOnDestroy(): void {
