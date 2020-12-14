@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { delay, take, takeUntil } from 'rxjs/operators';
 import {
   IHero,
   IHeroDetails,
@@ -24,13 +24,15 @@ import NOTIFY from '../shared/constants/notifications';
   styleUrls: ['./battle-page.component.css'],
 })
 export class BattlePageComponent implements OnInit {
+  simulateBattle$ = new BehaviorSubject(false);
+  simulateBattle = this.simulateBattle$.asObservable();
+
   userHero: IHero;
   opponentHero: IHeroDetails;
   availablePowerUps: IPowerUp[];
   appliedPowerUps: IPowerUp[];
   enhanced: string[];
   enhancement: number = 0;
-  battleLoader: boolean = false;
 
   private readonly battlePageSubscriptionDestroyed$: Subject<boolean> = new Subject<boolean>();
 
@@ -69,8 +71,6 @@ export class BattlePageComponent implements OnInit {
   }
 
   enhanceHero(powerUp: IPowerUp): void {
-    console.log(this.enhanced);
-
     const index = this.availablePowerUps.findIndex(
       ({ id }) => id === powerUp.id
     );
@@ -89,7 +89,8 @@ export class BattlePageComponent implements OnInit {
   }
 
   getWinner(): void {
-    this.battleLoader = true;
+    this.simulateBattle$.next(true);
+
     const userStats =
       this.getStats(this.userHero.powerstats) + this.enhancement;
     const opponentStats = this.getStats(this.opponentHero.powerstats);
@@ -103,11 +104,14 @@ export class BattlePageComponent implements OnInit {
       result: result,
     };
     this.userRecordsService.addNewBattleRecord(newBattleRecord);
-
-    setTimeout(() => {
-      this.battleLoader = false;
+    this.simulateBattle.pipe(delay(4000), take(1)).subscribe(() => {
       this.openBattleModal(result);
-    }, 4000);
+      this.simulateBattle$.next(false);
+    });
+  }
+
+  fightIsUnderway() {
+    this.simulateBattle.subscribe();
   }
 
   isApplied(id: string): boolean {

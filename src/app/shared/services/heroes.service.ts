@@ -174,7 +174,9 @@ export class HeroesService {
 
   private handleError(error: HttpErrorResponse): Observable<never> {
     console.error(error.message);
-    return throwError('A data error occurred, please try again.');
+    return throwError(
+      'Ooops... Something bad happened, please try again later'
+    );
   }
 
   getQueriesFromStorage(): string[] | any[] {

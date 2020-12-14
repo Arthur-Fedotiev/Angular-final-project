@@ -1,17 +1,17 @@
 <mat-grid-list
-  *ngIf="!battleLoader; else battleSpinner"
+  *ngIf="!(simulateBattle | async); else battleSpinner"
   cols="3"
-  rows="4"
-  rowHeight="1.5:1"
+  rows="10"
+  rowHeight="3.5:1"
 >
-  <mat-grid-tile [rowspan]="4">
+  <mat-grid-tile [rowspan]="10">
     <app-battle-card
       [hero]="userHero"
       [appliedPowerUps]="appliedPowerUps"
       [enhanced]="enhanced"
     ></app-battle-card>
   </mat-grid-tile>
-  <mat-grid-tile [rowspan]="3">
+  <mat-grid-tile [rowspan]="6">
     <div class="buttons-container">
       <button mat-button class="user-hero-name">
         <h2 matLine>{{ userHero?.name }}</h2>
@@ -29,7 +29,7 @@
       </button>
     </div>
   </mat-grid-tile>
-  <mat-grid-tile [rowspan]="4">
+  <mat-grid-tile [rowspan]="10">
     <app-battle-card
       *ngIf="opponentHero; else spinner"
       [hero]="opponentHero"
@@ -39,7 +39,7 @@
       <mat-spinner></mat-spinner>
     </ng-template>
   </mat-grid-tile>
-  <mat-grid-tile [rowspan]="1" [colspan]="1">
+  <mat-grid-tile [rowspan]="4" [colspan]="1">
     <app-powerups-list
       *ngIf="!!availablePowerUps.length; else noPowerUpsLeft"
       (enhance)="enhanceHero($event)"
