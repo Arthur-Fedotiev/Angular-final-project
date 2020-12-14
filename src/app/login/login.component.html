@@ -5,6 +5,7 @@
       <div id="usernameControlContainer" *ngIf="!isLogging">
         <p>
           <mat-form-field>
+            <mat-label>Username</mat-label>
             <input
               id="userName"
               type="text"
@@ -12,39 +13,64 @@
               placeholder="Username"
               formControlName="username"
             />
+            <mat-hint align="end"
+              >Two words (more than 8 characters),kebab-case, camelCase, Space
+              Case - allowed, without special symbols or numbers
+            </mat-hint>
+            <mat-error
+              align="end"
+              *ngIf="renderError('username', 'required'); else casePattern"
+            >
+              Username is required.
+            </mat-error>
+            <ng-template #casePattern>
+              <mat-error
+                align="end"
+                class="error"
+                *ngIf="renderError('username', 'casePattern')"
+              >
+                {{ form.username.errors?.casePattern.forbiddenNameAlert }}
+              </mat-error></ng-template
+            >
           </mat-form-field>
-        </p>
-
-        <p *ngIf="renderError('username', 'required')" class="error">
-          Username is required.
-        </p>
-
-        <p *ngIf="renderError('username', 'casePattern')" class="error">
-          {{ form.username.errors?.casePattern.forbiddenNameAlert }}
         </p>
       </div>
 
       <p>
         <mat-form-field>
+          <mat-label>Email</mat-label>
           <input
             matInput
             type="email"
             placeholder="Email"
             formControlName="email"
-            autocomplete="username"
             required
           />
+          <mat-hint align="end">
+            Supports only (.com, .net, .org, .co, .us) domains, 5 symbols after
+            @, less than 3 dots before @, no spaces.
+          </mat-hint>
+          <mat-error
+            align="end"
+            *ngIf="renderError('email', 'required'); else cannotContainSpace"
+          >
+            Username is required.
+          </mat-error>
+          <ng-template #cannotContainSpace>
+            <mat-error
+              align="end"
+              *ngIf="renderError('email', 'cannotContainSpace'); else pattern"
+            >
+              Email should not contain whitespaces.
+            </mat-error></ng-template
+          >
+          <ng-template #pattern>
+            <mat-error align="end" *ngIf="renderError('email', 'pattern')">
+              Supports only (.com, .net, .org, .co, .us) domains, only 5 symbols
+              after @ allowed, and no more than 3 dots before @.
+            </mat-error></ng-template
+          >
         </mat-form-field>
-      </p>
-      <p *ngIf="renderError('email', 'required')" class="error">
-        Email is required.
-      </p>
-      <p *ngIf="renderError('email', 'cannotContainSpace')" class="error">
-        Email should not contain whitespaces.
-      </p>
-      <p *ngIf="renderError('email', 'pattern')" class="error">
-        Supports only (.com, .net, .org, .co, .us) domains, only 5 symbols after
-        @ allowed, and no more than 3 dots before @.
       </p>
 
       <p>
@@ -57,32 +83,40 @@
             autocomplete="off"
           />
           <mat-hint align="end"
-            >Password should not contain parts of your e-mail. It must include
-            at least one uppercase and lowercase letter, special symbol, and be
-            longer than 5 charachters
+            >Parts of your e-mail banned. Must include one uppercase and
+            lowercase letter, special symbol, be longer than 5 charachters
           </mat-hint>
+
+          <mat-error align="end" *ngIf="isError(); else withoutSpaces">
+            {{ loginForm.errors?.passwordIsUnique.passwordUniqnessAlert }}
+          </mat-error>
+
+          <ng-template #withoutSpaces>
+            <mat-error
+              align="end"
+              *ngIf="
+                renderError('password', 'cannotContainSpace');
+                else passwordPattern
+              "
+            >
+              Password should not contain whitespaces.
+            </mat-error></ng-template
+          >
+          <ng-template #passwordPattern>
+            <mat-error
+              align="end"
+              *ngIf="renderError('password', 'pattern'); else passwordRequired"
+            >
+              Password must include at least one uppercase and lowercase letter,
+              special symbol, and be longer than 5 charachters.
+            </mat-error></ng-template
+          >
+          <ng-template #passwordRequired>
+            <mat-error align="end" *ngIf="renderError('password', 'required')">
+              Password is required
+            </mat-error></ng-template
+          >
         </mat-form-field>
-      </p>
-      <div
-        *ngIf="isError()"
-        class="cross-validation-error-message alert alert-danger"
-      >
-        <p *ngIf="loginForm.errors?.passwordIsUnique" class="error">
-          {{ loginForm.errors?.passwordIsUnique.passwordUniqnessAlert }}
-        </p>
-      </div>
-
-      <p *ngIf="renderError('password', 'cannotContainSpace')" class="error">
-        Password should not contain whitespaces.
-      </p>
-
-      <p *ngIf="renderError('password', 'pattern')" class="error">
-        Password must include at least one uppercase and lowercase letter,
-        special symbol, and be longer than 5 charachters.
-      </p>
-
-      <p *ngIf="renderError('password', 'required')" class="error">
-        Password is required.
       </p>
 
       <div class="button">

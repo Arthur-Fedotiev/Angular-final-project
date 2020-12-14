@@ -9,23 +9,18 @@
   min-width: 300px;
 }
 
-input:-webkit-autofill {
-  animation-name: onAutoFillStart;
-  transition: background-color 50000s ease-in-out 0s;
-}
-
 mat-card-title,
 mat-card-content {
   display: flex;
   justify-content: center;
 }
 
-.error {
+/* .error {
   padding: 16px;
   width: 300px;
   color: white;
   background-color: red;
-}
+} */
 
 .button {
   display: flex;
