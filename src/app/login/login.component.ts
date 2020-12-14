@@ -93,7 +93,9 @@ export class LoginComponent implements OnInit {
   }
 
   toggleForm(): void {
-    this.loginForm = this.getRegisterFormGroup();
+    this.loginForm = this.isLogging
+      ? this.getRegisterFormGroup()
+      : this.getLoginFormGroup();
     this.titles = !this.isLogging;
     this.isLogging = !this.isLogging;
   }
