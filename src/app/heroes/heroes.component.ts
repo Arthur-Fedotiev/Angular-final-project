@@ -1,18 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, of, Subject, throwError } from 'rxjs';
+import { Observable, of, Subject, Subscription } from 'rxjs';
 import {
   catchError,
-  concatMap,
-  debounceTime,
-  delay,
   distinctUntilChanged,
-  exhaustMap,
   finalize,
-  first,
-  flatMap,
-  startWith,
   switchMap,
-  take,
   takeUntil,
   tap,
 } from 'rxjs/operators';
@@ -27,8 +19,8 @@ import TIME_CONST from '../shared/constants/providersConstants';
   styleUrls: ['./heroes.component.css'],
 })
 export class HeroesComponent implements OnInit {
-  searchInputText = new Subject();
-  searchInputText$ = this.searchInputText.asObservable();
+  searchInputText: Subject<string> = new Subject<string>();
+  searchInputText$: Observable<string> = this.searchInputText.asObservable();
 
   heroes$: Observable<IHero[]>;
 
@@ -50,20 +42,27 @@ export class HeroesComponent implements OnInit {
     this.inputSearchSubscriptionInit();
   }
 
-  inputSearchSubscriptionInit() {
+  inputSearchSubscriptionInit(): Subscription {
     return this.searchInputText
       .pipe(
         distinctUntilChanged(this.compareNewSearchWithOldOne),
         takeUntil(this.heroesSubscriptionDestroyed$),
-        switchMap((heroName: string) =>
-          this.heroesService.searchHeroes(heroName, 5000).pipe(
-            tap(() => this.heroesService.addNewQuery(heroName)),
-            finalize(() => (this.loading = false)),
-            catchError((err) => {
-              this.notificationService.notify(err);
-              return of(undefined);
-            })
-          )
+        switchMap(
+          (heroName: string): Observable<IHero[]> => {
+            const timeToWait: number =
+              heroName.length > 1
+                ? TIME_CONST.WAIT_FOR_NAME_QUERY
+                : TIME_CONST.WAIT_FOR_LETTER_QUERY;
+
+            return this.heroesService.searchHeroes(heroName, timeToWait).pipe(
+              tap(() => this.heroesService.addNewQuery(heroName)),
+              finalize(() => (this.loading = false)),
+              catchError((err) => {
+                this.notificationService.notify(err);
+                return of(undefined);
+              })
+            );
+          }
         )
       )
       .subscribe((heroes) => {
@@ -80,9 +79,11 @@ export class HeroesComponent implements OnInit {
         'Heyy... You can search for new ones, pal!'
       );
       this.loading = false;
+
       return true;
     } else {
       this.loading = true;
+
       return false;
     }
   };
@@ -92,10 +93,7 @@ export class HeroesComponent implements OnInit {
     this.searchInputText.next(searchLetter);
   }
 
-  searchHero(
-    heroName: string,
-    waitForResponse: number = TIME_CONST.WAIT_FOR_NAME_QUERY
-  ): void {
+  searchHero(heroName: string): void {
     this.searchInputText.next(heroName);
   }
 
