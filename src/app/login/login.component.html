@@ -1,7 +1,11 @@
 <mat-card>
   <mat-card-title [textContent]="formTitle"></mat-card-title>
   <mat-card-content>
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm.value)">
+    <form
+      id="login-form"
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit(loginForm.value)"
+    >
       <div id="usernameControlContainer" *ngIf="!isLogging">
         <p>
           <mat-form-field>
@@ -40,6 +44,7 @@
         <mat-form-field>
           <mat-label>Email</mat-label>
           <input
+            name="email"
             matInput
             type="email"
             placeholder="Email"
@@ -76,6 +81,7 @@
       <p>
         <mat-form-field>
           <input
+            #pass
             matInput
             type="password"
             placeholder="Password"

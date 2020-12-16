@@ -1,4 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  AfterContentChecked,
+  AfterViewChecked,
+  Component,
+  ElementRef,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -17,11 +25,14 @@ import { Form } from '../shared/enums';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, AfterViewChecked {
+  val: string;
   isLogging: boolean = true;
   formTitle: string = Form.Login;
   toggleBtnTitle: string = Form.Signup;
   loginForm: FormGroup;
+
+  @ViewChild('pass') password: ElementRef;
 
   constructor(private formBuilder: FormBuilder, private auth: AuthService) {}
 
@@ -31,6 +42,11 @@ export class LoginComponent implements OnInit {
 
   get form(): IFormControls {
     return this.loginForm.controls;
+  }
+
+  ngAfterViewChecked() {
+    console.log(this.loginForm.value);
+    console.log(this.val);
   }
 
   set titles(isLogging: boolean) {
