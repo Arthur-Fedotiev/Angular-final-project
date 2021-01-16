@@ -31,14 +31,6 @@ h2.mat-line {
 .buttons-container {
   height: fit-content;
   text-align: center;
-  /* position: absolute;
-  left: 25%;
-  top: 25%;
-  width: 50%; */
-
-  /* display: inline-grid;
-      width: 100%;
-      justify-content: center; */
 }
 
 .mat-raised-button {
@@ -49,4 +41,30 @@ h2.mat-line {
 
 .no-powerups-message {
   text-align: center;
+}
+.flex-container {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+}
+
+.flex-item {
+  align-self: center;
+}
+
+@media (min-width: 600px) {
+  .flex-container {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+@media (min-height: 1000px) {
+  .flex-container {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 }

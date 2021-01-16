@@ -1,26 +1,7 @@
-import {
-  AbstractControl,
-  ValidationErrors,
-  ValidatorFn,
-  FormGroup,
-} from '@angular/forms';
+import { ValidationErrors, ValidatorFn, FormGroup } from '@angular/forms';
 import VALIDATE_CONST from '../constants/validateConstants';
 
 export class PasswordValidator {
-  static pattern = VALIDATE_CONST.PASSWORD_PATTERN;
-
-  static cannotContainSpaces(
-    control: AbstractControl
-  ): ValidationErrors | null {
-    if (control.value.indexOf(' ') < 0) {
-      return null;
-    }
-
-    return {
-      cannotContainSpace: true,
-    };
-  }
-
   static cannotContainEmailParts: ValidatorFn = (
     formGroup: FormGroup
   ): ValidationErrors | null => {

@@ -149,7 +149,7 @@ export class HeroesService {
   searchHeroes(query: string, waitForResponse: number): Observable<IHero[]> {
     const url = this.baseHeroesUrl + 'search/' + query.trim();
 
-    return this.http.get<Record<string, []>>(url).pipe(
+    return this.http.get<{ [results: string]: IAPIResults[] }>(url).pipe(
       timeout(waitForResponse),
       retry(1),
       map(({ results }) => results.map(this.transformHeroesListResponse)),
@@ -179,7 +179,7 @@ export class HeroesService {
     );
   }
 
-  getQueriesFromStorage(): string[] | any[] {
+  getQueriesFromStorage(): string[] | never[] {
     return this.localStorageService.getItem(AUTH_CONST.QUERIES) || [];
   }
 

@@ -3,14 +3,14 @@ export interface IHero {
   name: string;
   powerstats: IStats;
   url: string;
-  selected: boolean;
+  selected?: boolean;
 }
 
-export interface IHeroDetails {
-  id: string;
-  name: string;
-  powerstats: IStats;
-  url: string;
+export interface IHeroDetails extends IHero {
+  // id: string;
+  // name: string;
+  // powerstats: IStats;
+  // url: string;
   fullName: string;
   firstAppeared: string;
   gender: string;

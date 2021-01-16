@@ -5,12 +5,12 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { EmailValidator } from 'src/app/shared/validators/emailValidator';
 import { PasswordValidator } from 'src/app/shared/validators/passwordValidator';
-import { UsernameValidator } from 'src/app/shared/validators/usernameValidator';
+import { PatternValidator } from 'src/app/shared/validators/patternValidator';
 import { AuthService } from '../shared/services/auth.service';
 import { IUser, IFormControls } from '../shared/interfaces/authInterface';
 import { Form } from '../shared/enums';
+import VALIDATE_CONST from '../shared/constants/validateConstants';
 
 @Component({
   selector: 'app-login',
@@ -30,49 +30,44 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.getLoginFormGroup();
   }
 
-  get form(): IFormControls {
-    return this.loginForm.controls;
-  }
-
-  set titles(isLogging: boolean) {
-    this.formTitle = isLogging ? Form.Login : Form.Signup;
-    this.toggleBtnTitle = isLogging ? Form.Signup : Form.Cancel;
-  }
-
-  getEmailFormControl(): FormControl {
+  private getEmailFormControl(): FormControl {
     return this.formBuilder.control(
       '',
       Validators.compose([
         Validators.required,
-        Validators.pattern(EmailValidator.pattern),
-        PasswordValidator.cannotContainSpaces,
+        Validators.pattern(VALIDATE_CONST.EMAIL_PATTERN),
+        PatternValidator.cannotContainSpaces,
       ])
     );
   }
 
-  getPasswordFormControl(): FormControl {
+  private getPasswordFormControl(): FormControl {
     return this.formBuilder.control(
       '',
       Validators.compose([
         Validators.required,
-        Validators.pattern(PasswordValidator.pattern),
-        PasswordValidator.cannotContainSpaces,
+        Validators.pattern(VALIDATE_CONST.PASSWORD_PATTERN),
+        PatternValidator.cannotContainSpaces,
       ])
     );
   }
 
-  getusernameFormControl(): FormControl {
+  private getusernameFormControl(): FormControl {
     return this.formBuilder.control(
       '',
       Validators.compose([
         Validators.required,
         Validators.minLength(8),
-        UsernameValidator.validateCasePatterns,
+        PatternValidator.validateCasePatterns(
+          VALIDATE_CONST.SPACE_CASE_PATTERN,
+          VALIDATE_CONST.KEBAB_CASE_PATTERN,
+          VALIDATE_CONST.CAMEL_CASE_PATTERN
+        ),
       ])
     );
   }
 
-  getLoginFormGroup(): FormGroup {
+  private getLoginFormGroup(): FormGroup {
     return this.formBuilder.group(
       {
         email: this.getEmailFormControl(),
@@ -82,7 +77,7 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  getRegisterFormGroup(): FormGroup {
+  private getRegisterFormGroup(): FormGroup {
     return this.formBuilder.group(
       {
         username: this.getusernameFormControl(),
@@ -91,6 +86,15 @@ export class LoginComponent implements OnInit {
       },
       { validators: PasswordValidator.cannotContainEmailParts }
     );
+  }
+
+  get form(): IFormControls {
+    return this.loginForm.controls;
+  }
+
+  set titles(isLogging: boolean) {
+    this.formTitle = isLogging ? Form.Login : Form.Signup;
+    this.toggleBtnTitle = isLogging ? Form.Signup : Form.Cancel;
   }
 
   toggleForm(): void {
@@ -116,7 +120,7 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  onSubmit(formDate: IUser): void {
+  onSubmit<T extends IUser>(formDate: T): void {
     this.isLogging ? this.auth.login(formDate) : this.auth.signup(formDate);
   }
 }

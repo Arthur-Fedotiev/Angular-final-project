@@ -1,4 +1,49 @@
-<mat-grid-list
+<div
+  class="flex-container"
+  *ngIf="!(simulateBattle | async); else battleSpinner"
+>
+  <div class="flex-card flex-item">
+    <app-battle-card
+      [hero]="userHero"
+      [appliedPowerUps]="appliedPowerUps"
+      [enhanced]="enhanced"
+    ></app-battle-card>
+  </div>
+  <div class="flex-wrapper-meny flex-item">
+    <div class="buttons-flex-item-container">
+      <button mat-button class="user-hero-name">
+        <h2 matLine>{{ userHero?.name }}</h2>
+      </button>
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="getWinner()"
+        [disabled]="!opponentHero"
+      >
+        <h1 matLine>FIGHT</h1>
+      </button>
+      <button mat-button color="warn">
+        <h2 matLine>{{ opponentHero?.name }}</h2>
+      </button>
+    </div>
+    <div class="powerups-flex-item-container">
+      <app-powerups-list
+        *ngIf="!!availablePowerUps.length; else noPowerUpsLeft"
+        (enhance)="enhanceHero($event)"
+        [availablePowerUps]="availablePowerUps"
+      ></app-powerups-list>
+    </div>
+  </div>
+  <div class="flex-card flex-item">
+    <app-battle-card
+      *ngIf="opponentHero; else spinner"
+      [hero]="opponentHero"
+      [appliedPowerUps]="[]"
+    ></app-battle-card>
+  </div>
+</div>
+
+<!-- <mat-grid-list
   *ngIf="!(simulateBattle | async); else battleSpinner"
   cols="3"
   rows="10"
@@ -51,7 +96,18 @@
       </div>
     </ng-template>
   </mat-grid-tile>
-</mat-grid-list>
+</mat-grid-list> -->
+
+<ng-template #noPowerUpsLeft>
+  <div class="no-powerups-message">
+    <h2 matLine>You have no available powerups left!</h2>
+  </div>
+</ng-template>
+
 <ng-template #battleSpinner>
   <app-overlay-spinner overlay="true"></app-overlay-spinner>
+</ng-template>
+
+<ng-template #spinner>
+  <mat-spinner></mat-spinner>
 </ng-template>
