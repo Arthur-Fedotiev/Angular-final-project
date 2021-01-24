@@ -13,14 +13,16 @@ import AUTH_CONST from '../constants/authConstants';
 import PROVIDERS_CONST from '../constants/providersConstants';
 import { LocalStorageService } from './local-storage.service';
 import randomNumber from '../utils/randomNumber';
+import { BaseHeroClass } from '../classes/base-hero-class';
+import { DetailedHeroClass } from '../classes/detailed-hero-class';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HeroesService {
   succesfullQueries: string[] = this.querriesFromStorage;
-  selectedHeroes: IHero[] = this.selectedHeroesFromStorage;
-  lastSelectedHero: IHero | null = this.getLastHeroFromStorageOrNull();
+  selectedHeroes: BaseHeroClass[] = this.selectedHeroesFromStorage;
+  lastSelectedHero: BaseHeroClass | null = this.getLastHeroFromStorageOrNull();
 
   private baseHeroesUrl: string = `https://www.superheroapi.com/api.php/${AUTH_CONST.API_TOKEN}/`;
 
@@ -33,7 +35,7 @@ export class HeroesService {
     return this.localStorageService.getItem(AUTH_CONST.QUERIES);
   }
 
-  private get selectedHeroesFromStorage(): IHero[] {
+  private get selectedHeroesFromStorage(): BaseHeroClass[] {
     return this.localStorageService.getItem(AUTH_CONST.SELECTED_HEROES);
   }
 
@@ -47,11 +49,13 @@ export class HeroesService {
     return this.succesfullQueries;
   }
 
-  getSelectedHeroes(): IHero[] {
+  getSelectedHeroes(): BaseHeroClass[] {
     return this.selectedHeroes;
   }
 
-  getLastSelectedHero(): IHero {
+  getLastSelectedHero(): BaseHeroClass {
+    console.log(this.lastSelectedHero);
+
     return this.lastSelectedHero;
   }
 
@@ -67,17 +71,22 @@ export class HeroesService {
     );
   }
 
-  addToSelected(selectedHero: IHero): void {
+  addToSelected(selectedHero: BaseHeroClass): void {
     this.selectedHeroes.push(selectedHero);
-    this.lastSelectedHero = { ...selectedHero };
+
+    this.lastSelectedHero = Object.assign(
+      Object.create(selectedHero),
+      selectedHero
+    );
+
     this.localStorageService.setItem(
       AUTH_CONST.SELECTED_HEROES,
       this.selectedHeroes
     );
   }
 
-  setNewLastSelectedHero(reselectedHero: IHero): void {
-    this.lastSelectedHero = { ...reselectedHero };
+  setNewLastSelectedHero(reselectedHero: BaseHeroClass): void {
+    this.lastSelectedHero = reselectedHero;
   }
 
   removeFromSelected(id: string): void {
@@ -94,11 +103,11 @@ export class HeroesService {
     }
   }
 
-  private getLastHeroOrNull(heroes: IHero[]): IHero | null {
+  private getLastHeroOrNull(heroes: BaseHeroClass[]): BaseHeroClass | null {
     return heroes.length === 0 ? null : heroes[heroes.length - 1];
   }
 
-  private getLastHeroFromStorageOrNull(): IHero | null {
+  private getLastHeroFromStorageOrNull(): BaseHeroClass | null {
     return !this.selectedHeroes || this.selectedHeroes.length === 0
       ? null
       : this.selectedHeroes[this.selectedHeroes.length - 1];
@@ -108,71 +117,36 @@ export class HeroesService {
     return this.lastSelectedHero.id === id;
   }
 
-  private getProperPowerstats(powerStats: IStats): IStats {
-    Object.keys(powerStats).map((stat) => {
-      if (powerStats[stat] === 'null') {
-        powerStats[stat] = randomNumber(1, 100).toString();
-      }
-    });
-
-    return powerStats;
-  }
-
-  private transformHeroesListResponse = (response: IAPIResults): IHero => {
-    return {
-      id: response.id,
-      name: response.name,
-      powerstats: this.getProperPowerstats(response.powerstats),
-      url: response.image.url,
-      selected: false,
-    };
-  };
-
-  private transformSingleHeroResponse = (
-    apiResponse: ISingleHeroAPIResponse
-  ): IHeroDetails => {
-    return {
-      id: apiResponse.id,
-      name: apiResponse.name,
-      powerstats: this.getProperPowerstats(apiResponse.powerstats),
-      url: apiResponse.image.url,
-      fullName: apiResponse.biography['full-name'],
-      firstAppeared: apiResponse.biography['first-appearance'],
-      gender: apiResponse.appearance.gender,
-      height: apiResponse.appearance.height[1],
-      race: apiResponse.appearance.race,
-      belongesTo: apiResponse.connections['group-affiliation'],
-      relatives: apiResponse.connections.relatives,
-    };
-  };
-
-  searchHeroes(query: string, waitForResponse: number): Observable<IHero[]> {
+  searchHeroes(
+    query: string,
+    waitForResponse: number
+  ): Observable<BaseHeroClass[]> {
     const url = this.baseHeroesUrl + 'search/' + query.trim();
 
     return this.http.get<{ [results: string]: IAPIResults[] }>(url).pipe(
       timeout(waitForResponse),
       retry(1),
-      map(({ results }) => results.map(this.transformHeroesListResponse)),
+      map(({ results }) =>
+        results.map((heroAPI) => new BaseHeroClass(heroAPI))
+      ),
       catchError(this.handleError)
     );
   }
 
-  searchById(id: string | void): Observable<IHeroDetails> {
+  searchById(id: string | void): Observable<DetailedHeroClass> {
     const url = id
       ? this.baseHeroesUrl + id
       : this.baseHeroesUrl +
         randomNumber(PROVIDERS_CONST.MIN_ID, PROVIDERS_CONST.MAX_ID);
 
-    return this.http
-      .get<ISingleHeroAPIResponse>(url)
-      .pipe(
-        retry(1),
-        map(this.transformSingleHeroResponse),
-        catchError(this.handleError)
-      );
+    return this.http.get<ISingleHeroAPIResponse>(url).pipe(
+      retry(1),
+      map((heroFromAPI) => new DetailedHeroClass(heroFromAPI)),
+      catchError(this.handleError)
+    );
   }
 
-  private handleError(error: HttpErrorResponse): Observable<never> {
+  private handleError(error: HttpErrorResponse): Observable<any> {
     console.error(error.message);
     return throwError(
       'Ooops... Something bad happened, please try again later'

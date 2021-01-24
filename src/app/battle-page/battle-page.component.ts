@@ -64,6 +64,7 @@ export class BattlePageComponent implements OnInit {
       .subscribe(
         (APIresponse: IHeroDetails) => {
           this.opponentHero = APIresponse;
+          console.log(this.opponentHero);
         },
         () => this.notificationService.notify(NOTIFY.BAD_RESPONSE)
       );

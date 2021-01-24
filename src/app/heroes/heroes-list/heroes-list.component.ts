@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { BaseHeroClass } from 'src/app/shared/classes/base-hero-class';
 import { IHero } from 'src/app/shared/interfaces/heroInterface';
 import { HeroesService } from 'src/app/shared/services/heroes.service';
 
@@ -8,10 +9,10 @@ import { HeroesService } from 'src/app/shared/services/heroes.service';
   styleUrls: ['./heroes-list.component.css'],
 })
 export class HeroesListComponent implements OnInit {
-  @Input() heroes: IHero[];
+  @Input() heroes: BaseHeroClass[];
   @Output() heroSelect: EventEmitter<string> = new EventEmitter<string>();
 
-  lastSelectedHero: IHero | null;
+  lastSelectedHero: BaseHeroClass | null;
 
   constructor(private heroesService: HeroesService) {}
 
@@ -19,7 +20,7 @@ export class HeroesListComponent implements OnInit {
     this.lastSelectedHero = this.heroesService.getLastSelectedHero();
   }
 
-  selectHero = (hero: IHero): void => {
+  selectHero = (hero: BaseHeroClass): void => {
     this.heroSelect.emit(hero.id);
     this.heroesService.addToSelected(hero);
     this.lastSelectedHero = this.heroesService.getLastSelectedHero();

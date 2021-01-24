@@ -38,19 +38,17 @@ export interface HeroSearch {
 }
 
 export interface IAPIResults {
+  [key: string]: any;
   id: string;
   name: string;
   powerstats: IStats;
-  image: { [key: string]: string };
-  selected: boolean;
+  image: {
+    url: string;
+    [key: string]: string;
+  };
 }
 
-export interface ISingleHeroAPIResponse {
-  response: string;
-  id: string;
-  name: string;
-  powerstats: IStats;
-  image: IObjectWithOnlyStrings;
+export interface ISingleHeroAPIResponse extends IAPIResults {
   biography: IBiography;
   appearance: IAppearance;
   connections: IObjectWithOnlyStrings;
