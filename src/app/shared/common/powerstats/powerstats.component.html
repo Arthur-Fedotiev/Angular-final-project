@@ -1,0 +1,15 @@
+<div class="powerstats">
+  <h2 matLine>{{ "Powerstats" | titlecase }}</h2>
+
+  <div class="powerstats-wrapper">
+    <div class="stat" *ngFor="let stat of powerstats | keyvalue">
+      <h3 matLine>
+        {{ stat.key | titlecase }}
+      </h3>
+      <div class="buffes" *ngIf="isEnhanced(stat.key)">
+        <button mat-mini-fab>+10</button>
+      </div>
+      <p matLine>{{ stat.value }}</p>
+    </div>
+  </div>
+</div>

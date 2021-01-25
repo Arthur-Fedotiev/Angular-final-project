@@ -1,0 +1,135 @@
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
+import {
+  IUser,
+  IAuthResult,
+  IEnteredCredentials,
+} from '../interfaces/authInterface';
+import AUTH_CONST from '../constants/authConstants';
+import { NotificationService } from './notification.service';
+import { UsersService } from './users.service';
+import { LocalStorageService } from './local-storage.service';
+import { HeroesService } from './heroes.service';
+import { UserRecordsService } from './user-records.service';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class AuthService {
+  private isActiveSession = new BehaviorSubject(
+    this.getIsActiveSession() || false
+  );
+  isActiveSession$ = this.isActiveSession.asObservable();
+
+  constructor(
+    private router: Router,
+    private notificationService: NotificationService,
+    private usersService: UsersService,
+    private localStorageService: LocalStorageService,
+    private heroesService: HeroesService,
+    private userRecordsService: UserRecordsService
+  ) {}
+
+  private getExpirationDate(): number {
+    return new Date(Date.now() + 1 * 3600 * 600).getTime();
+  }
+
+  signup(newUser: IUser): void {
+    const expirationDate = this.getExpirationDate();
+
+    this.localStorageService.initializeLocalStorage();
+
+    this.usersService.addNewUserToLocalStorage(newUser);
+    this.setActiveSession(expirationDate);
+    this.isActiveSession.next(true);
+    this.router.navigateByUrl('/heroes');
+  }
+
+  login(IUser: IUser): void {
+    const IAuthResult: IAuthResult = this.authenticateUser(IUser);
+
+    if (IAuthResult.noUser) {
+      return this.notificationService.notify(AUTH_CONST.LOGIN_NO_USER);
+    }
+
+    if (IAuthResult.wrongPassword) {
+      return this.notificationService.notify(AUTH_CONST.LOGIN_WRONG_PASSWORD);
+    }
+
+    const expirationDate = this.getExpirationDate();
+
+    this.localStorageService.initializeLocalStorage();
+    this.setActiveSession(expirationDate);
+    this.isActiveSession.next(true);
+    this.router.navigateByUrl('/heroes');
+
+    return this.notificationService.notify(AUTH_CONST.LOGIN_SUCCESS);
+  }
+
+  logout(): void {
+    this.restoreDefaultStoragesAndServices();
+    this.setActiveSession(false);
+    this.isActiveSession.next(false);
+    this.router.navigateByUrl('/login');
+  }
+
+  getIsActiveSession(): boolean {
+    const isTokenExists: boolean = this.localStorageService.isInStorage(
+      AUTH_CONST.AUTHENTICATION_KEY
+    );
+
+    if (!isTokenExists) {
+      this.restoreDefaultStoragesAndServices();
+      return false;
+    }
+
+    const sessionIsExpired: boolean =
+      Date.now() >
+      this.localStorageService.getItem(AUTH_CONST.AUTHENTICATION_KEY);
+
+    if (sessionIsExpired) {
+      this.restoreDefaultStoragesAndServices();
+      this.notificationService.notify(AUTH_CONST.SESSION_EXPIRED);
+    }
+
+    return !sessionIsExpired;
+  }
+
+  private restoreDefaultStoragesAndServices(): void {
+    this.localStorageService.emptyLocalStorage();
+    this.heroesService.emptyHeroesStorage();
+    this.userRecordsService.restoreDefaultUserRecords();
+  }
+
+  private setActiveSession(expirationDate: number | boolean): void {
+    expirationDate
+      ? this.localStorageService.setItem(
+          AUTH_CONST.AUTHENTICATION_KEY,
+          expirationDate
+        )
+      : this.localStorageService.deleteItem(AUTH_CONST.AUTHENTICATION_KEY);
+  }
+
+  private authenticateUser({
+    email: enteredEmail,
+    password: enteredPassword,
+  }: IEnteredCredentials): IAuthResult {
+    const IAuthResult: IAuthResult = { noUser: false, wrongPassword: false };
+    const storedUsers = this.usersService.getUsersFromStorage();
+    const isRegisteredUser = storedUsers.findIndex(
+      ({ email }) => email === enteredEmail
+    );
+
+    if (!!isRegisteredUser) {
+      IAuthResult.noUser = true;
+    }
+
+    if (!isRegisteredUser) {
+      IAuthResult.wrongPassword =
+        storedUsers[isRegisteredUser].password !== enteredPassword;
+    }
+
+    return IAuthResult;
+  }
+}

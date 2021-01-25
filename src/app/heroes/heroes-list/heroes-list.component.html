@@ -1,0 +1,11 @@
+<mat-list>
+  <app-hero-card
+    *ngFor="let hero of heroes"
+    [hero]="hero"
+    [clickActionTitle]="'SELECT'"
+    [clickHandler]="selectHero"
+    [lastSelectedHero]="lastSelectedHero"
+    [list]="'All'"
+  >
+  </app-hero-card>
+</mat-list>

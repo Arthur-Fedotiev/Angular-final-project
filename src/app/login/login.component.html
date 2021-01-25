@@ -1,0 +1,144 @@
+<mat-card>
+  <mat-card-title [textContent]="formTitle"></mat-card-title>
+  <mat-card-content>
+    <form
+      id="login-form"
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit(loginForm.value)"
+    >
+      <div id="usernameControlContainer" *ngIf="!isLogging">
+        <p>
+          <mat-form-field>
+            <mat-label>Username</mat-label>
+            <input
+              id="userName"
+              type="text"
+              matInput
+              placeholder="Username"
+              formControlName="username"
+            />
+            <mat-hint align="end"
+              >Two words (more than 8 characters),kebab-case, camelCase, Space
+              Case - allowed, without special symbols or numbers
+            </mat-hint>
+            <mat-error
+              align="end"
+              *ngIf="renderError('username', 'required'); else casePattern"
+            >
+              Username is required.
+            </mat-error>
+            <ng-template #casePattern>
+              <mat-error
+                align="end"
+                class="error"
+                *ngIf="renderError('username', 'casePattern')"
+              >
+                {{ form.username.errors?.casePattern.forbiddenNameAlert }}
+              </mat-error></ng-template
+            >
+          </mat-form-field>
+        </p>
+      </div>
+
+      <p>
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input
+            name="email"
+            matInput
+            type="email"
+            placeholder="Email"
+            formControlName="email"
+            required
+          />
+          <mat-hint align="end">
+            Supports only (.com, .net, .org, .co, .us) domains, 5 symbols after
+            @, less than 3 dots before @, no spaces.
+          </mat-hint>
+          <mat-error
+            align="end"
+            *ngIf="renderError('email', 'required'); else cannotContainSpace"
+          >
+            Username is required.
+          </mat-error>
+          <ng-template #cannotContainSpace>
+            <mat-error
+              align="end"
+              *ngIf="renderError('email', 'cannotContainSpace'); else pattern"
+            >
+              Email should not contain whitespaces.
+            </mat-error></ng-template
+          >
+          <ng-template #pattern>
+            <mat-error align="end" *ngIf="renderError('email', 'pattern')">
+              Supports only (.com, .net, .org, .co, .us) domains, only 5 symbols
+              after @ allowed, and no more than 3 dots before @.
+            </mat-error></ng-template
+          >
+        </mat-form-field>
+      </p>
+
+      <p>
+        <mat-form-field>
+          <input
+            matInput
+            type="password"
+            placeholder="Password"
+            formControlName="password"
+            autocomplete="off"
+          />
+          <mat-hint align="end"
+            >Parts of your e-mail banned. Must include one uppercase and
+            lowercase letter, special symbol, be longer than 5 charachters
+          </mat-hint>
+
+          <mat-error align="end" *ngIf="isError(); else withoutSpaces">
+            {{ loginForm.errors?.passwordIsUnique.passwordUniqnessAlert }}
+          </mat-error>
+
+          <ng-template #withoutSpaces>
+            <mat-error
+              align="end"
+              *ngIf="
+                renderError('password', 'cannotContainSpace');
+                else passwordPattern
+              "
+            >
+              Password should not contain whitespaces.
+            </mat-error></ng-template
+          >
+          <ng-template #passwordPattern>
+            <mat-error
+              align="end"
+              *ngIf="renderError('password', 'pattern'); else passwordRequired"
+            >
+              Password must include at least one uppercase and lowercase letter,
+              special symbol, and be longer than 5 charachters.
+            </mat-error></ng-template
+          >
+          <ng-template #passwordRequired>
+            <mat-error align="end" *ngIf="renderError('password', 'required')">
+              Password is required
+            </mat-error></ng-template
+          >
+        </mat-form-field>
+      </p>
+
+      <div class="button">
+        <button
+          mat-button
+          type="submit"
+          [textContent]="formTitle"
+          [disabled]="!loginForm.valid"
+        ></button>
+        <button
+          mat-button
+          type="button"
+          [textContent]="toggleBtnTitle"
+          (click)="toggleForm()"
+        ></button>
+      </div>
+    </form>
+    <pre>{{ form.errors }}</pre>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,13 @@
+@import "@angular/material/prebuilt-themes/purple-green.css";
+.mat-card-actions {
+  display: flex;
+  justify-content: space-around;
+}
+
+.powerup-header-image {
+  background-size: cover;
+}
+
+.mat-card-title {
+  margin-bottom: 1rem;
+}

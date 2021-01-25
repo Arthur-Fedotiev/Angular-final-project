@@ -1,1 +1,42 @@
-<p>{{ title }}</p>
+<mat-drawer-container autosize class="container">
+  <mat-drawer #drawer class="sidenav">
+    <p>Menu</p>
+    <button mat-button color="primary" routerLink="/heroes">Home</button>
+    <button mat-button color="primary" routerLink="/login">Login test</button>
+  </mat-drawer>
+  <div class="sidenav-content">
+    <mat-toolbar color="primary">
+      <mat-toolbar-row>
+        <div class="title-container">
+          <button
+            mat-icon-button
+            *ngIf="isActiveSession$ | async"
+            (click)="drawer.toggle()"
+          >
+            <mat-icon class="">menu</mat-icon>
+          </button>
+          <span>Title</span>
+        </div>
+        <button
+          mat-raised-button
+          color="warn"
+          routerLink="/battle"
+          *ngIf="isActiveSession$ | async"
+        >
+          FIGHT!
+        </button>
+        <!-- <span class="spacer"></span> -->
+
+        <div *ngIf="isActiveSession$ | async">
+          <button mat-mini-fab routerLink="/user">
+            <mat-icon>person</mat-icon>
+          </button>
+          <button mat-button class="logout" color="warn" (click)="logout()">
+            Logout
+          </button>
+        </div>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </div>
+</mat-drawer-container>

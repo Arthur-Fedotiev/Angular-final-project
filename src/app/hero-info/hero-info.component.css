@@ -1,0 +1,75 @@
+.content-tile {
+  max-height: fit-content;
+  overflow-y: scroll;
+}
+.stats-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+::ng-deep mat-grid-tile.mat-grid-tile .mat-figure {
+  display: block !important;
+}
+
+p.mat-line {
+  display: inline;
+}
+
+h2.mat-line {
+  margin: 1rem auto;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid #ffd740;
+}
+
+.content-tile::-webkit-scrollbar {
+  width: 1em;
+}
+
+.content-tile::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.content-tile::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+
+.hero-info-page-container {
+  position: relative;
+  padding-top: 2rem;
+  width: 80%;
+  margin: auto;
+}
+
+.mat-card {
+  max-width: 100%;
+  margin: 0 auto;
+  padding-top: 0;
+}
+
+.mat-card-avatar {
+  background-color: lightgray;
+}
+
+.mat-card-actions {
+  display: flex;
+}
+
+.mat-card-actions .flex-spacer {
+  width: 100%;
+}
+
+.mat-line {
+  text-align: center;
+}
+
+.favorite {
+  cursor: pointer;
+}
+
+.favorite.is-favorite {
+  fill: red;
+  color: red;
+}

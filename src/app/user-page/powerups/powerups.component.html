@@ -1,0 +1,14 @@
+<mat-list>
+
+    <mat-card id="{{  powerUp.id }}" class="powerup-card" *ngFor="let powerUp of powerUps | sortDescendNumber"
+        [ngClass]="{ 'no-uses-left':!powerUp.usesLeft }">
+        <mat-card-header>
+            <p matLine>{{ powerUp.usesLeft }}</p>
+            <div mat-card-avatar class="powerup-header-image"
+                [ngStyle]="{ 'background-image': 'url(' + powerUp.url + ')' }"></div>
+            <mat-card-title>{{ powerUp.title }}</mat-card-title>
+            <mat-card-subtitle>{{ powerUp.description }}</mat-card-subtitle>
+        </mat-card-header>
+    </mat-card>
+
+</mat-list>

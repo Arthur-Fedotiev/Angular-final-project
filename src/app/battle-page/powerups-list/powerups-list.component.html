@@ -1,0 +1,13 @@
+<mat-card class="example-card mat-elevation-z8">
+  <mat-card-actions>
+    <button
+      mat-fab
+      mat-card-avatar
+      *ngFor="let powerUp of availablePowerUps"
+      id="{{ powerUp.id }}"
+      class="powerup-header-image"
+      [ngStyle]="{ 'background-image': 'url(' + powerUp.url + ')' }"
+      (click)="usePowerUp(powerUp)"
+    ></button>
+  </mat-card-actions>
+</mat-card>

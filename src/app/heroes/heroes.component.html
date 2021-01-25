@@ -1,0 +1,18 @@
+<div class="page-container">
+  <app-alphabetical-search
+    (alphabeticalSearch)="searchByletter($event)"
+  ></app-alphabetical-search>
+  <app-heroes-search
+    [searchLetter]="searchLetter"
+    (searchHero)="searchHero($event)"
+  ></app-heroes-search>
+  <app-heroes-list
+    *ngIf="!loading; else spinner"
+    [heroes]="heroes"
+    (heroSelect)="heroSelect($event)"
+  >
+  </app-heroes-list>
+</div>
+<ng-template #spinner>
+  <app-overlay-spinner></app-overlay-spinner>
+</ng-template>

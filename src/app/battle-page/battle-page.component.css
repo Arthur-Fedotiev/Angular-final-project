@@ -1,0 +1,52 @@
+mat-grid-tile {
+  background: lightgoldenrodyellow;
+}
+::ng-deep mat-grid-tile.mat-grid-tile .mat-figure {
+  /* display: block !important; */
+  position: absolute;
+  align-items: center;
+}
+
+.user-hero-name {
+  color: green;
+}
+
+h1.mat-line {
+  margin: 1rem auto;
+  font-family: "Bangers", cursive;
+  font-size: 2rem;
+}
+
+h2.mat-line {
+  margin: 1rem auto;
+  font-family: "Bangers", cursive;
+  font-size: 3rem;
+  line-height: 3rem;
+}
+
+.mat-card {
+  height: 500px;
+}
+
+.buttons-container {
+  height: fit-content;
+  text-align: center;
+  /* position: absolute;
+  left: 25%;
+  top: 25%;
+  width: 50%; */
+
+  /* display: inline-grid;
+      width: 100%;
+      justify-content: center; */
+}
+
+.mat-raised-button {
+  display: block;
+  width: 100%;
+  margin: 2rem auto;
+}
+
+.no-powerups-message {
+  text-align: center;
+}
